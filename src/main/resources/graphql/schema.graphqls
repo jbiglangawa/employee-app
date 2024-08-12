@@ -1,0 +1,68 @@
+type Employee {
+    employeeId: Int
+    firstName: String
+    lastName: String
+    middleName: String
+    age: Int
+    birthDate: String
+    hireDate: String
+    gender: String
+    maritalStatus: String
+    currentPosition: String
+    contacts: [Contact]
+    addresses: [Address]
+}
+
+type Contact {
+    contactId: Int
+    contactInfo: String
+    isPrimary: Boolean
+}
+
+type Address {
+    addressId: Int
+    address1: String
+    address2: String
+    isPrimary: Boolean
+}
+
+input PageSize {
+    size: Int
+    page: Int
+}
+
+input EditContact {
+    contactId: Int
+    contactInfo: String
+    isPrimary: Boolean
+}
+
+input EditAddress {
+    addressId: Int
+    address1: String
+    address2: String
+    isPrimary: Boolean
+}
+
+input EditEmployee {
+    firstName: String
+    lastName: String
+    middleName: String
+    age: Int
+    birthDate: String
+    hireDate: String
+    gender: String
+    maritalStatus: String
+    currentPosition: String
+    contacts: [EditContact]
+    addresses: [EditAddress]
+}
+
+type Query {
+    getEmployees(pageSize: PageSize!): [Employee]
+}
+
+type Mutation {
+    createEmployee(employee: EditEmployee!): Int
+    updateEmployee(employeeId: Int, employee: EditEmployee!): Int
+}

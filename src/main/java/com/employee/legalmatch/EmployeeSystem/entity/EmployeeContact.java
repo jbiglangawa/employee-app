@@ -18,7 +18,7 @@ public class EmployeeContact {
     @Column(name = "IsPrimary")
     private Boolean isPrimary;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "EmployeeId")
     private Employee employee;
 }

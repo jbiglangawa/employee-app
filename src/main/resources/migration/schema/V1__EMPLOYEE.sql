@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Employee (
-    EmployeeId INT NOT NULL,
+    EmployeeId INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(255),
     LastName VARCHAR(255),
     MiddleName VARCHAR(255),
