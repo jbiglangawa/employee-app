@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/legalmatch
+    username: mysql_user
+    password: test_pw
+  flyway:
+    enabled: true
+    locations: classpath:migration/schema, classpath:migration/data
+    validate-on-migrate: true
