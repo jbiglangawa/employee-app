@@ -71,9 +71,6 @@ public class EmployeeService implements IEmployeeService {
         if (CommonUtil.isNotNullOrEmpty(updates.getCurrentPosition())) {
             employee.setCurrentPosition(updates.getCurrentPosition());
         }
-        if (employee.getAge() != null) {
-            employee.setAge(updates.getAge());
-        }
         if (updates.getBirthDate() != null) {
             employee.setBirthDate(updates.getBirthDate());
         }

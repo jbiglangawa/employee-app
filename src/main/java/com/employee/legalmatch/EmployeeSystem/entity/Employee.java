@@ -28,9 +28,6 @@ public class Employee {
     @Column(name = "MiddleName")
     private String middleName;
 
-    @Column(name = "Age")
-    private Integer age;
-
     @Column(name = "BirthDate")
     private ZonedDateTime birthDate;
 

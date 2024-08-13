@@ -13,7 +13,6 @@ public class EmployeeMapper implements IEmployeeMapper {
         newEmployee.setFirstName(dto.getFirstName());
         newEmployee.setLastName(dto.getLastName());
         newEmployee.setMiddleName(dto.getMiddleName());
-        newEmployee.setAge(dto.getAge());
         newEmployee.setBirthDate(dto.getBirthDate());
         newEmployee.setHireDate(dto.getHireDate());
         newEmployee.setMaritalStatus(dto.getMaritalStatus());

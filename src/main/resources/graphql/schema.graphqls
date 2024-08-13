@@ -15,7 +15,6 @@ type Employee {
     firstName: String
     lastName: String
     middleName: String
-    age: Int
     birthDate: ZonedDateTime
     hireDate: ZonedDateTime
     gender: String
@@ -67,7 +66,6 @@ input UpdateEmployeeInput {
     firstName: String
     lastName: String
     middleName: String
-    age: Int
     birthDate: ZonedDateTime
     hireDate: ZonedDateTime
     gender: String
