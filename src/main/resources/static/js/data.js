@@ -61,7 +61,6 @@ const createEmployee = async (formData) => {
         })
     }
 
-    console.log(formData)
     const res = await fetch(serverUrl + '/graphql', {
         method: 'POST',
         headers: {
@@ -86,6 +85,22 @@ const createEmployee = async (formData) => {
                                 formData.addresses.map(a => `{address1: "${a.address1}", address2: "${a.address2}", isPrimary: ${a.isPrimary}}`) : ''}]
                         }
                     )
+                }`
+        })
+    }).then(res => res.json())
+    return res
+}
+
+const deleteEmployeeById = async (employeeId) => {
+    const res = await fetch(serverUrl + '/graphql', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: `
+                mutation DeleteEmployee {
+                    deleteEmployee(employeeId: ${employeeId})
                 }`
         })
     }).then(res => res.json())

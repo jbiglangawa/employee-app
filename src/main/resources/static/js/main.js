@@ -14,8 +14,8 @@ const renderEmployeeTable = async () => {
                     <td>${getLengthOfStay(moment(employee.hireDate))}</td>
                     <td>
                         <div class="grid">
-                            <i class="fas fa-edit"></i>
-                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-edit clickeable-icon" onclick=""></i>
+                            <i class="fas fa-trash clickeable-icon" onclick="deleteEmployee(${employee.employeeId})"></i>
                         </div>
                     </td>
                 </tr>
@@ -112,4 +112,9 @@ const addAddressInfo = () => {
             <td><input type="checkbox" name="address-is-primary-${currentLength}"></td>
             <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-${currentLength}')"></i></td>
         </tr>`)
+}
+
+const deleteEmployee = async (employeeId) => {
+    await deleteEmployeeById(employeeId);
+    await renderEmployeeTable();
 }

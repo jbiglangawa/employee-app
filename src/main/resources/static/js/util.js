@@ -16,6 +16,7 @@ const getLengthOfStay = (date) => {
         const subtractor = Number(yearsDiff.toFixed(0)) * 12
         formatted.push((monthsDiff.toFixed(0) - subtractor) + 'm')
     }
+    if(formatted.length == 0) return '0'
     return formatted.join(' ')
 }
 

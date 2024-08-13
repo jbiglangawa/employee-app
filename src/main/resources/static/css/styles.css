@@ -80,4 +80,13 @@ button.rounded {
 
 .clickeable-icon {
     cursor: pointer;
+    color: #727272;
+}
+
+.clickeable-icon:hover {
+    color: var(--pico-color);
+}
+
+.hidden {
+    display: none;
 }
