@@ -1,16 +1,28 @@
+type Query {
+    getEmployees(pageSize: PageSize!): [Employee]
+}
+
+type Mutation {
+    createEmployee(employee: EmployeeInput!): Int
+    updateEmployee(employeeId: Int!, employee: EmployeeInput!): Int
+    deleteEmployee(employeeId: Int!): Int
+}
+
+scalar ZonedDateTime
+
 type Employee {
     employeeId: Int
     firstName: String
     lastName: String
     middleName: String
     age: Int
-    birthDate: String
-    hireDate: String
+    birthDate: ZonedDateTime
+    hireDate: ZonedDateTime
     gender: String
     maritalStatus: String
     currentPosition: String
-    createdOn: String
-    updatedOn: String
+    createdOn: ZonedDateTime
+    updatedOn: ZonedDateTime
     contacts: [Contact]
     addresses: [Address]
 }
@@ -19,8 +31,8 @@ type Contact {
     contactId: Int
     contactInfo: String
     isPrimary: Boolean
-    createdOn: String
-    updatedOn: String
+    createdOn: ZonedDateTime
+    updatedOn: ZonedDateTime
 }
 
 type Address {
@@ -28,8 +40,8 @@ type Address {
     address1: String
     address2: String
     isPrimary: Boolean
-    createdOn: String
-    updatedOn: String
+    createdOn: ZonedDateTime
+    updatedOn: ZonedDateTime
 }
 
 input PageSize {
@@ -55,8 +67,8 @@ input EmployeeInput {
     lastName: String
     middleName: String
     age: Int
-    birthDate: String
-    hireDate: String
+    birthDate: ZonedDateTime
+    hireDate: ZonedDateTime
     gender: String
     maritalStatus: String
     currentPosition: String
@@ -64,14 +76,4 @@ input EmployeeInput {
     contacts: [EditContact]
     clearAddresses: Boolean
     addresses: [EditAddress]
-}
-
-type Query {
-    getEmployees(pageSize: PageSize!): [Employee]
-}
-
-type Mutation {
-    createEmployee(employee: EmployeeInput!): Int
-    updateEmployee(employeeId: Int!, employee: EmployeeInput!): Int
-    deleteEmployee(employeeId: Int!): Int
 }

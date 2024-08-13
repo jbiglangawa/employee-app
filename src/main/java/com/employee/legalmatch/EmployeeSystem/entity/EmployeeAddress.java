@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.time.ZonedDateTime;
+
 @Entity
 @Table(name = "EmployeeAddress")
 @Data
@@ -22,6 +24,12 @@ public class EmployeeAddress {
 
     @Column(name = "IsPrimary")
     private Boolean isPrimary;
+
+    @Column(name = "CreatedOn")
+    private ZonedDateTime createdOn;
+
+    @Column(name = "UpdatedOn")
+    private ZonedDateTime updatedOn;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

@@ -5,6 +5,7 @@ import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class EmployeeDTO {
     private String lastName;
     private String middleName;
     private Integer age;
-    private LocalDateTime birthDate;
-    private LocalDateTime hireDate;
+    private ZonedDateTime birthDate;
+    private ZonedDateTime hireDate;
     private String gender;
     private String maritalStatus;
     private String currentPosition;

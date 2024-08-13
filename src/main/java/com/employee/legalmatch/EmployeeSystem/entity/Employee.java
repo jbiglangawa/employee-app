@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,10 @@ public class Employee {
     private Integer age;
 
     @Column(name = "BirthDate")
-    private LocalDateTime birthDate;
+    private ZonedDateTime birthDate;
 
     @Column(name = "HireDate")
-    private LocalDateTime hireDate;
+    private ZonedDateTime hireDate;
 
     @Column(name = "Gender")
     private String gender;
@@ -45,26 +46,15 @@ public class Employee {
     @Column(name = "CurrentPosition")
     private String currentPosition;
 
+    @Column(name = "CreatedOn")
+    private ZonedDateTime createdOn;
+
+    @Column(name = "UpdatedOn")
+    private ZonedDateTime updatedOn;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<EmployeeContact> contacts = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<EmployeeAddress> addresses = new ArrayList<>();
-
-    public static Employee fromDTO(EmployeeDTO dto) {
-        var newEmployee = new Employee();
-        newEmployee.setEmployeeId(dto.getEmployeeId());
-        newEmployee.setFirstName(dto.getFirstName());
-        newEmployee.setLastName(dto.getLastName());
-        newEmployee.setMiddleName(dto.getMiddleName());
-        newEmployee.setAge(dto.getAge());
-        newEmployee.setBirthDate(dto.getBirthDate());
-        newEmployee.setHireDate(dto.getHireDate());
-        newEmployee.setMaritalStatus(dto.getMaritalStatus());
-        newEmployee.setCurrentPosition(dto.getCurrentPosition());
-        newEmployee.setContacts(dto.getContacts().stream().peek(e -> e.setEmployee(newEmployee)).toList());
-        newEmployee.setAddresses(dto.getAddresses().stream().peek(e -> e.setEmployee(newEmployee)).toList());
-        return newEmployee;
-    }
-
 }

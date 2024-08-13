@@ -5,6 +5,7 @@ import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
+import com.employee.legalmatch.EmployeeSystem.mapper.IEmployeeMapper;
 import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeAddressRepository;
 import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeContactRepository;
 import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeRepository;
@@ -27,6 +28,8 @@ public class EmployeeService implements IEmployeeService {
     private final IEmployeeAddressRepository employeeAddressRepository;
     private final EntityManager entityManager;
 
+    private final IEmployeeMapper employeeMapper;
+
     @Override
     public List<Employee> getEmployees(PageSize pageSize) {
         return employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size()))
@@ -36,7 +39,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public Employee createEmployee(EmployeeDTO employee) {
-        return employeeRepository.saveAndFlush(Employee.fromDTO(employee));
+        return employeeRepository.saveAndFlush(employeeMapper.map(employee));
     }
 
     /**
