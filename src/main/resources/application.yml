@@ -7,3 +7,11 @@ spring:
     enabled: true
     locations: classpath:migration/schema, classpath:migration/data
     validate-on-migrate: true
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  application:
+    name: EmployeeSystem
+  profiles:
+    active: dev

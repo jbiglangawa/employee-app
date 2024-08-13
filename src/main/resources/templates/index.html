@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="img/favicon-32x32.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/pico.min.css">
+    <link rel="stylesheet" href="css/gotham.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
+
+    <title>LegalMatch - Employee Catalogue</title>
+    <script type="text/javascript" th:inline="javascript">
+        var serverUrl = [[${serverAddress}]];
+    </script>
+</head>
+<body>
+<header>
+  <div class="main-logo">
+    <a href="/">
+      <img src="img/legalmatch-icon.png" alt="legalmatch-logo">
+      <span>INTERNAL</span>
+    </a>
+  </div>
+</header>
+    <main class="container">
+      <section>
+        <button>Add</button>
+      </section>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Primary Address</th>
+              <th scope="col">Primary Contact Info</th>
+              <th scope="col">Age</th>
+              <th scope="col"># of Years in the Company</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody id="employee-table">
+          </tbody>
+        </table>
+      </div>
+      <div class="right">
+        <button class="outline secondary"><i class="fas fa-angle-double-left"></i></button>
+        <button class="outline secondary"><i class="fas fa-angle-left"></i></button>
+        <button class="outline secondary"><i class="fas fa-angle-right"></i></button>
+        <button class="outline secondary"><i class="fas fa-angle-double-right"></i></button>
+      </div>
+    </main>
+    <script src="js/moment.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

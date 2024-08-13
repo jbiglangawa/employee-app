@@ -1,0 +1,7 @@
+spring:
+  graphql:
+    cors:
+      allow-credentials: true
+      allowed-origins:
+        - http://localhost:8080
+        - http://127.0.0.1:5500
