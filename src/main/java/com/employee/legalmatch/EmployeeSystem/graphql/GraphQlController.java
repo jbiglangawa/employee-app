@@ -1,5 +1,6 @@
 package com.employee.legalmatch.EmployeeSystem.graphql;
 
+import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.dto.PageSize;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
@@ -35,13 +36,14 @@ public class GraphQlController {
     }
 
     @MutationMapping
-    public Integer createEmployee(@Argument Employee employee) {
-        return employeeService.createEmployee(employee);
+    public Integer createEmployee(@Argument EmployeeDTO employee) {
+        return employeeService.createEmployee(employee).getEmployeeId();
     }
 
     @MutationMapping
-    public Integer updateEmployee(@Argument Employee employee) {
-        return employeeService.updateEmployee(employee);
+    public Integer updateEmployee(@Argument Integer employeeId, @Argument EmployeeDTO employee) {
+        employee.setEmployeeId(employeeId);
+        return employeeService.updateEmployee(employee).getEmployeeId();
     }
 
     @MutationMapping

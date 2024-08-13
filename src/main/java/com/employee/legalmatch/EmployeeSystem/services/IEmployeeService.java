@@ -1,5 +1,6 @@
 package com.employee.legalmatch.EmployeeSystem.services;
 
+import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.dto.PageSize;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 
@@ -8,9 +9,9 @@ import java.util.List;
 public interface IEmployeeService {
     List<Employee> getEmployees(PageSize pageSize);
 
-    Integer createEmployee(Employee employee);
+    Employee createEmployee(EmployeeDTO employee);
 
-    Integer updateEmployee(Employee employee);
+    Employee updateEmployee(EmployeeDTO employee);
 
     Integer deleteEmployee(Integer employeeId);
 }

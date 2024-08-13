@@ -1,12 +1,14 @@
 package com.employee.legalmatch.EmployeeSystem.services;
 
 import com.employee.legalmatch.EmployeeSystem.dto.PageSize;
+import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
 import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeAddressRepository;
 import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeContactRepository;
 import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeRepository;
+import com.employee.legalmatch.EmployeeSystem.util.CommonUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -33,60 +35,53 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    @Transactional
-    public Integer createEmployee(Employee employee) {
-        var savedEmployee = employeeRepository.save(employee);
-        if(!employee.getContacts().isEmpty()) {
-            employeeContactRepository.saveAll(employee.getContacts().stream()
-                    .peek(ec -> ec.setEmployee(employee))
-                    .collect(Collectors.toList()));
-        }
-        if(!employee.getAddresses().isEmpty()) {
-            employeeAddressRepository.saveAll(employee.getAddresses().stream()
-                    .peek(ec -> ec.setEmployee(employee))
-                    .collect(Collectors.toList()));
-        }
-        return savedEmployee.getEmployeeId();
+    public Employee createEmployee(EmployeeDTO employee) {
+        return employeeRepository.saveAndFlush(Employee.fromDTO(employee));
     }
 
+    /**
+     * Granular approach for updating individual fields.
+     * To delete all contacts/addresses, clearContacts/clearAddresses flag must be true
+     * @param updates dto with new employee information
+     * @return The updated employee
+     */
     @Override
     @Transactional
-    public Integer updateEmployee(Employee updates) {
-        Optional<Employee> byId = employeeRepository.findById(Long.valueOf(updates.getEmployeeId()));
-        if(byId.isEmpty()) {
-            throw new EntityNotFoundException("ID " + updates.getEmployeeId() + " could not be found");
-        }
-        var employee = byId.get();
-        if (!employee.getFirstName().equals(updates.getFirstName())) {
+    public Employee updateEmployee(EmployeeDTO updates) {
+        var employee = employeeRepository.findById(Long.valueOf(updates.getEmployeeId()))
+                .orElseThrow(() -> new EntityNotFoundException("ID " + updates.getEmployeeId() + " could not be found"));
+        if (CommonUtil.isNotNullOrEmpty(updates.getFirstName())) {
             employee.setFirstName(updates.getFirstName());
         }
-        if (!employee.getLastName().equals(updates.getLastName())) {
+        if (CommonUtil.isNotNullOrEmpty(updates.getLastName())) {
             employee.setLastName(updates.getLastName());
         }
-        if (!employee.getMiddleName().equals(updates.getMiddleName())) {
+        if (CommonUtil.isNotNullOrEmpty(updates.getMiddleName())) {
             employee.setMiddleName(updates.getMiddleName());
         }
-        if (employee.getAge() == null || !employee.getAge().equals(updates.getAge())) {
-            employee.setAge(updates.getAge());
-        }
-        if (employee.getBirthDate() == null || !employee.getBirthDate().equals(updates.getBirthDate())) {
-            employee.setBirthDate(updates.getBirthDate());
-        }
-        if (employee.getHireDate() == null || !employee.getHireDate().equals(updates.getHireDate())) {
-            employee.setHireDate(updates.getHireDate());
-        }
-        if (!employee.getGender().equals(updates.getGender())) {
+        if (CommonUtil.isNotNullOrEmpty(updates.getGender())) {
             employee.setGender(updates.getGender());
         }
-        if (!employee.getMaritalStatus().equals(updates.getMaritalStatus())) {
+        if (CommonUtil.isNotNullOrEmpty(updates.getMaritalStatus())) {
             employee.setMaritalStatus(updates.getMaritalStatus());
         }
-        if (!employee.getCurrentPosition().equals(updates.getCurrentPosition())) {
+        if (CommonUtil.isNotNullOrEmpty(updates.getCurrentPosition())) {
             employee.setCurrentPosition(updates.getCurrentPosition());
+        }
+        if (employee.getAge() != null) {
+            employee.setAge(updates.getAge());
+        }
+        if (updates.getBirthDate() != null) {
+            employee.setBirthDate(updates.getBirthDate());
+        }
+        if (updates.getHireDate() != null) {
+            employee.setHireDate(updates.getHireDate());
         }
 
         // Handles Create/Update/Delete operations for contact changes
-        if(!employee.getContacts().isEmpty() || !updates.getContacts().isEmpty()) {
+        if(updates.getContacts().isEmpty() && updates.getClearContacts()) {
+            employee.getContacts().clear();
+        }else if(!updates.getContacts().isEmpty()) {
             var newContacts = updates.getContacts().stream()
                     .filter(contact -> contact.getContactId() == null)
                     .peek(contact -> contact.setEmployee(employee))
@@ -109,7 +104,9 @@ public class EmployeeService implements IEmployeeService {
         }
 
         // Handles Create/Update/Delete operations for address changes
-        if(!employee.getAddresses().isEmpty() || !updates.getAddresses().isEmpty()) {
+        if(updates.getAddresses().isEmpty() && updates.getClearAddresses()) {
+            employee.getAddresses().clear();
+        }else if(!updates.getAddresses().isEmpty()) {
             var newAddresses = updates.getAddresses().stream()
                     .filter(contact -> contact.getAddressId() == null)
                     .peek(contact -> contact.setEmployee(employee))
@@ -132,8 +129,7 @@ public class EmployeeService implements IEmployeeService {
             employee.getAddresses().addAll(updatedAddresses);
         }
 
-        employeeRepository.save(employee);
-        return employee.getEmployeeId();
+        return employeeRepository.saveAndFlush(employee);
     }
 
     @Override

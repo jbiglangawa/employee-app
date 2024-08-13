@@ -1,6 +1,8 @@
 package com.employee.legalmatch.EmployeeSystem.entity;
 
+import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -48,5 +50,21 @@ public class Employee {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<EmployeeAddress> addresses = new ArrayList<>();
+
+    public static Employee fromDTO(EmployeeDTO dto) {
+        var newEmployee = new Employee();
+        newEmployee.setEmployeeId(dto.getEmployeeId());
+        newEmployee.setFirstName(dto.getFirstName());
+        newEmployee.setLastName(dto.getLastName());
+        newEmployee.setMiddleName(dto.getMiddleName());
+        newEmployee.setAge(dto.getAge());
+        newEmployee.setBirthDate(dto.getBirthDate());
+        newEmployee.setHireDate(dto.getHireDate());
+        newEmployee.setMaritalStatus(dto.getMaritalStatus());
+        newEmployee.setCurrentPosition(dto.getCurrentPosition());
+        newEmployee.setContacts(dto.getContacts().stream().peek(e -> e.setEmployee(newEmployee)).toList());
+        newEmployee.setAddresses(dto.getAddresses().stream().peek(e -> e.setEmployee(newEmployee)).toList());
+        return newEmployee;
+    }
 
 }

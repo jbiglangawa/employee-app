@@ -9,6 +9,8 @@ type Employee {
     gender: String
     maritalStatus: String
     currentPosition: String
+    createdOn: String
+    updatedOn: String
     contacts: [Contact]
     addresses: [Address]
 }
@@ -17,6 +19,8 @@ type Contact {
     contactId: Int
     contactInfo: String
     isPrimary: Boolean
+    createdOn: String
+    updatedOn: String
 }
 
 type Address {
@@ -24,6 +28,8 @@ type Address {
     address1: String
     address2: String
     isPrimary: Boolean
+    createdOn: String
+    updatedOn: String
 }
 
 input PageSize {
@@ -44,8 +50,7 @@ input EditAddress {
     isPrimary: Boolean
 }
 
-input EditEmployee {
-    employeeId: Int,
+input EmployeeInput {
     firstName: String
     lastName: String
     middleName: String
@@ -55,7 +60,9 @@ input EditEmployee {
     gender: String
     maritalStatus: String
     currentPosition: String
+    clearContacts: Boolean
     contacts: [EditContact]
+    clearAddresses: Boolean
     addresses: [EditAddress]
 }
 
@@ -64,7 +71,7 @@ type Query {
 }
 
 type Mutation {
-    createEmployee(employee: EditEmployee!): Int
-    updateEmployee(employee: EditEmployee!): Int
+    createEmployee(employee: EmployeeInput!): Int
+    updateEmployee(employeeId: Int!, employee: EmployeeInput!): Int
     deleteEmployee(employeeId: Int!): Int
 }
