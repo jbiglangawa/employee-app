@@ -82,7 +82,7 @@ public class EmployeeService implements IEmployeeService {
         }
 
         // Handles Create/Update/Delete operations for contact changes
-        if(updates.getContacts().isEmpty() && updates.getClearContacts()) {
+        if(updates.getContacts().isEmpty() && updates.isClearContacts()) {
             employee.getContacts().clear();
         }else if(!updates.getContacts().isEmpty()) {
             var newContacts = updates.getContacts().stream()
@@ -107,7 +107,7 @@ public class EmployeeService implements IEmployeeService {
         }
 
         // Handles Create/Update/Delete operations for address changes
-        if(updates.getAddresses().isEmpty() && updates.getClearAddresses()) {
+        if(updates.getAddresses().isEmpty() && updates.isClearAddresses()) {
             employee.getAddresses().clear();
         }else if(!updates.getAddresses().isEmpty()) {
             var newAddresses = updates.getAddresses().stream()

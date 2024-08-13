@@ -21,9 +21,9 @@ public class EmployeeDTO {
     private String gender;
     private String maritalStatus;
     private String currentPosition;
-    private Boolean clearContacts;
+    private boolean clearContacts;
     private List<EmployeeContact> contacts = new ArrayList<>();
-    private Boolean clearAddresses;
+    private boolean clearAddresses;
     private List<EmployeeAddress> addresses = new ArrayList<>();
 
 }
