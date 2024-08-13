@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,8 +16,8 @@ import java.util.Locale;
 
 @Configuration
 public class GraphQLScalarConfig {
-    private final DateTimeFormatter requestFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME; // With Timezone - 2011-12-03T10:15:30+01:00
-    private final DateTimeFormatter responseFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME; // With Timezone - 2011-12-03T10:15:30+01:00
+    private final DateTimeFormatter requestFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    private final DateTimeFormatter responseFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
     private final GraphQLScalarType DateScalar = GraphQLScalarType.newScalar()
             .name("ZonedDateTime")
             .description("A custom scalar that handles Date")

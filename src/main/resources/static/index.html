@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/svg+xml" href="img/favicon-32x32.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/pico.min.css">
+    <link rel="stylesheet" href="css/gotham.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <title>LegalMatch - Employee Catalogue</title>
+    <script type="text/javascript" th:inline="javascript">
+        var serverUrl = "http://192.168.1.8:8080" // [[${serverAddress}]];
+    </script>
+</head>
+
+<body>
+    <header class="landing-head">
+        <div class="main-logo">
+            <a href="/">
+                <img src="img/legalmatch-icon.png" alt="legalmatch-logo">
+                <span>INTERNAL</span>
+            </a>
+        </div>
+    </header>
+    <main class="container">
+        <section>
+            <button onclick="openEmployeeFormModal()">Add</button>
+        </section>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Primary Address</th>
+                        <th scope="col">Primary Contact Info</th>
+                        <th scope="col">Age</th>
+                        <th scope="col"># of Years in the Company</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="employee-table">
+                </tbody>
+            </table>
+        </div>
+        <div class="right">
+            <button class="outline secondary"><i class="fas fa-angle-double-left"></i></button>
+            <button class="outline secondary"><i class="fas fa-angle-left"></i></button>
+            <button class="outline secondary"><i class="fas fa-angle-right"></i></button>
+            <button class="outline secondary"><i class="fas fa-angle-double-right"></i></button>
+        </div>
+    </main>
+    <dialog id="edit-employee-dialog" class="edit-employee-dialog">
+        <article>
+            <header>
+                <button aria-label="Close" rel="prev" id="close-dialog"></button>
+                <h3 id="edit-employee-dialog-title">NEW EMPLOYEE REGISTRATION</h3>
+            </header>
+            <section>
+                <button id="save" onclick="saveEmployeeData()">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <button id="delete" class="secondary">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </section>
+            <p>
+            <form id="regis-form" class="regis-wrapper">
+                <div class="regis-form">
+                    <label>
+                        First Name
+                        <input type="text" name="firstName" placeholder="First Name" aria-label="First Name"
+                            maxlength="255" aria-describedby="firstNameHelper" id="firstName"
+                            class="required validate-maxlength">
+                        <small id="firstName-helper"></small>
+                    </label>
+                    <label>
+                        Last Name
+                        <input type="text" name="lastName" placeholder="Last Name" aria-label="Last Name"
+                            maxlength="255" class="required validate-maxlength">
+                        <small id="lastName-helper"></small>
+                    </label>
+                    <label>
+                        Middle Name
+                        <input type="text" name="middleName" placeholder="Middle Name" aria-label="Middle Name"
+                            maxlength="255" class="required validate-maxlength">
+                        <small id="middleName-helper"></small>
+                    </label>
+                    <label>
+                        Birth Date
+                        <input type="date" name="birthDate" placeholder="Birth Date" aria-label="Birth Date"
+                            class="required zonedDateTime">
+                        <small id="birthDate-helper"></small>
+                    </label>
+                    <label>
+                        Gender
+                        <input type="text" name="gender" placeholder="Gender" aria-label="Gender" maxlength="255"
+                            class="required validate-maxlength">
+                        <small id="gender-helper"></small>
+                    </label>
+                    <label>
+                        Marital Status
+                        <input type="text" name="maritalStatus" placeholder="Marital Status" aria-label="Marital Status"
+                            maxlength="255" class="required validate-maxlength">
+                        <small id="maritalStatus-helper"></small>
+                    </label>
+                    <label>
+                        Position
+                        <input type="text" name="position" placeholder="Position" aria-label="Position" maxlength="255"
+                            class="required validate-maxlength">
+                        <small id="position-helper"></small>
+                    </label>
+                    <label>
+                        Date Hired
+                        <input type="date" name="hireDate" placeholder="Date Hired" aria-label="Date Hired"
+                            class="required zonedDateTime">
+                        <small id="hireDate-helper"></small>
+                    </label>
+                </div>
+                <div class="">
+                    <h6>Contact Info:</h6>
+                    <table class="contact-info-table">
+                        <thead>
+                            <th scope="col">Value</th>
+                            <th scope="col">Primary</th>
+                            <th></th>
+                        </thead>
+                        <tbody id="contact-info-table-body">
+                            <tr id="contact-1">
+                                <th scope="row">
+                                    <input type="text" name="contact-info-1" maxlength=100
+                                        class="required validate-maxlength" placeholder="Contact Information"
+                                        aria-label="Contact Information">
+                                    <small id="contact-info-1-helper"></small>
+                                </th>
+                                <td><input type="checkbox" name="contact-is-primary-1" /></td>
+                                <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-1')"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="secondary right clickeable-icon" onclick="addContactInfo()">Add new</a>
+
+                    <h6>Address Info:</h6>
+                    <table class="address-info-table">
+                        <thead>
+                            <th scope="col">Address 1</th>
+                            <th scope="col">Address 2</th>
+                            <th scope="col">Primary</th>
+                            <th scope="col"></th>
+                        </thead>
+                        <tbody id="address-info-table-body">
+                            <tr id="address-1">
+                                <th scope="row">
+                                    <input type="text" name="address1-1" maxlength=500
+                                        class="required validate-maxlength" placeholder="Address 1"
+                                        aria-label="Address 1">
+                                    <small id="address1-1-helper"></small>
+                                </th>
+                                <td>
+                                    <input type="text" name="address2-1" maxlength=500
+                                        class="required validate-maxlength" placeholder="Address 2"
+                                        aria-label="Address 2">
+                                    <small id="address2-1-helper"></small>
+                                </td>
+                                <td><input type="checkbox" name="address-is-primary-1"></td>
+                                <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-1')"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="secondary right clickeable-icon" onclick="addAddressInfo()">Add new</a>
+                </div>
+            </form>
+
+            </p>
+        </article>
+    </dialog>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

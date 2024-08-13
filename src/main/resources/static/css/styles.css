@@ -4,7 +4,7 @@
     --pico-font-weight: 300;
 }
 
-header {
+header.landing-head {
     padding: 10px 5%;
     display: flex;
     justify-content: space-between;
@@ -12,33 +12,33 @@ header {
     background-color: #FFF;
 }
 
-header .main-logo a {
+header.landing-head .main-logo a {
     text-decoration: none;
     font-weight: 600;
     color: #012991;
     position: relative;
 }
 
-header .main-logo a img {
+header.landing-head .main-logo a img {
     width: 300px;
 }
 
-header .main-logo a span {
+header.landing-head .main-logo a span {
     position: absolute;
     text-wrap: nowrap;
     bottom: -12px;
     padding-left: 10px;
 }
 
-header .features-checklist ul {
+header.landing-head .features-checklist ul {
     list-style: none;
 }
 
-header .features-checklist ul li {
+header.landing-head .features-checklist ul li {
     margin: 5px 0;
 }
 
-header .features-checklist ul li:before {
+header.landing-head .features-checklist ul li:before {
     content: '✓ ';
     font-weight: 900;
     color: green;
@@ -51,4 +51,33 @@ header .features-checklist ul li:before {
 .right {
     display: flex;
     justify-content: flex-end;
+}
+
+.edit-employee-dialog article {
+    max-width: 1200px;
+}
+
+.regis-wrapper {
+    display: flex;
+}
+
+.regis-wrapper form,
+.regis-wrapper div {
+    padding: 10px;
+    width: 50%;
+}
+
+button.rounded {
+    border-radius: 100px;
+    width: 30px;
+    height: 30px;
+}
+
+.regis-wrapper td,
+.regis-wrapper th {
+    background-color: #181c25;
+}
+
+.clickeable-icon {
+    cursor: pointer;
 }

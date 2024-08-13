@@ -1,3 +1,6 @@
+const DATE_FORMAT_ISO_8601 = "yyyy-mm-ddTHH:MM:SS+01:00";
+const DATE_FORMAT_INPUT = "yyyy-mm-dd";
+
 const calculateAge = (date) => {
     return moment().diff(date, 'years').toFixed(0)
 }
@@ -14,4 +17,8 @@ const getLengthOfStay = (date) => {
         formatted.push((monthsDiff.toFixed(0) - subtractor) + 'm')
     }
     return formatted.join(' ')
+}
+
+const formatDate = (date) => {
+    return moment(date).format()
 }

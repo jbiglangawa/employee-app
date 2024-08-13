@@ -14,6 +14,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public List<Employee> getEmployees(PageSize pageSize) {
-        return employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size()))
+        return employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size(), Sort.by("DESC", "createdOn")))
                 .get()
                 .collect(Collectors.toList());
     }
