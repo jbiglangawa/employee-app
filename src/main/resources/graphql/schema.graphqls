@@ -3,8 +3,8 @@ type Query {
 }
 
 type Mutation {
-    createEmployee(employee: EmployeeInput!): Int
-    updateEmployee(employeeId: Int!, employee: EmployeeInput!): Int
+    createEmployee(employee: CreateEmployeeInput!): Int
+    updateEmployee(employee: UpdateEmployeeInput!): Int
     deleteEmployee(employeeId: Int!): Int
 }
 
@@ -49,20 +49,21 @@ input PageSize {
     page: Int
 }
 
-input EditContact {
+input ContactInput {
     contactId: Int
     contactInfo: String
     isPrimary: Boolean
 }
 
-input EditAddress {
+input AddressInput {
     addressId: Int
     address1: String
     address2: String
     isPrimary: Boolean
 }
 
-input EmployeeInput {
+input UpdateEmployeeInput {
+    employeeId: Int!
     firstName: String
     lastName: String
     middleName: String
@@ -73,7 +74,21 @@ input EmployeeInput {
     maritalStatus: String
     currentPosition: String
     clearContacts: Boolean
-    contacts: [EditContact]
+    contacts: [ContactInput]
     clearAddresses: Boolean
-    addresses: [EditAddress]
+    addresses: [AddressInput]
+}
+
+input CreateEmployeeInput {
+    firstName: String
+    lastName: String
+    middleName: String
+    age: Int
+    birthDate: ZonedDateTime
+    hireDate: ZonedDateTime
+    gender: String
+    maritalStatus: String
+    currentPosition: String
+    contacts: [ContactInput]
+    addresses: [AddressInput]
 }

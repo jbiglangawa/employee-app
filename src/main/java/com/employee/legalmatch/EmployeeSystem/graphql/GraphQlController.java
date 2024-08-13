@@ -41,8 +41,7 @@ public class GraphQlController {
     }
 
     @MutationMapping
-    public Integer updateEmployee(@Argument Integer employeeId, @Argument EmployeeDTO employee) {
-        employee.setEmployeeId(employeeId);
+    public Integer updateEmployee(@Argument EmployeeDTO employee) {
         return employeeService.updateEmployee(employee).getEmployeeId();
     }
 
