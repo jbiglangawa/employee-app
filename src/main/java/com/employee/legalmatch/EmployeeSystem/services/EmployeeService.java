@@ -11,7 +11,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,10 +51,10 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     @Transactional
-    public Integer updateEmployee(Integer employeeId, Employee updates) {
-        Optional<Employee> byId = employeeRepository.findById(Long.valueOf(employeeId));
+    public Integer updateEmployee(Employee updates) {
+        Optional<Employee> byId = employeeRepository.findById(Long.valueOf(updates.getEmployeeId()));
         if(byId.isEmpty()) {
-            throw new EntityNotFoundException("ID " + employeeId + " could not be found");
+            throw new EntityNotFoundException("ID " + updates.getEmployeeId() + " could not be found");
         }
         var employee = byId.get();
         if (!employee.getFirstName().equals(updates.getFirstName())) {

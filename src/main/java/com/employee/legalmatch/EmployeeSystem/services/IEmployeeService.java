@@ -10,7 +10,7 @@ public interface IEmployeeService {
 
     Integer createEmployee(Employee employee);
 
-    Integer updateEmployee(Integer employeeId, Employee employee);
+    Integer updateEmployee(Employee employee);
 
     Integer deleteEmployee(Integer employeeId);
 }
