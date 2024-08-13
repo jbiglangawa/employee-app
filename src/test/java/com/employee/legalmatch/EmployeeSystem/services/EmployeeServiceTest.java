@@ -25,12 +25,12 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static com.employee.legalmatch.EmployeeSystem.util.TestDataGenerator.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTest {
@@ -312,89 +312,5 @@ public class EmployeeServiceTest {
         Integer actual = employeeServiceInTest.deleteEmployee(1);
 
         assertEquals(expected, actual);
-    }
-
-    /* Utility methods */
-
-    EmployeeDTO generateTestEmployeeDTO(ZonedDateTime dateToUse) {
-        var dummyData = new EmployeeDTO();
-        dummyData.setFirstName("test");
-        dummyData.setLastName("test");
-        dummyData.setMiddleName("test");
-        dummyData.setAge(30);
-        dummyData.setBirthDate(dateToUse);
-        dummyData.setHireDate(dateToUse);
-        dummyData.setGender("test");
-        dummyData.setMaritalStatus("test");
-        dummyData.setCurrentPosition("test");
-
-        var dummyContact = new EmployeeContact();
-        dummyContact.setContactInfo("test");
-        dummyContact.setIsPrimary(false);
-        var dummyContactList = new ArrayList<EmployeeContact>();
-        dummyContactList.add(dummyContact);
-        dummyData.setContacts(dummyContactList);
-
-        var dummyAddress = new EmployeeAddress();
-        dummyAddress.setAddress1("test");
-        dummyAddress.setAddress2("test");
-        dummyAddress.setIsPrimary(false);
-        var dummyAddressList = new ArrayList<EmployeeAddress>();
-        dummyAddressList.add(dummyAddress);
-        dummyData.setAddresses(dummyAddressList);
-        return dummyData;
-    }
-
-    Employee generateTestEmployee(ZonedDateTime dateToUse) {
-        var dummyData = new Employee();
-        dummyData.setFirstName("test");
-        dummyData.setLastName("test");
-        dummyData.setMiddleName("test");
-        dummyData.setAge(30);
-        dummyData.setBirthDate(dateToUse);
-        dummyData.setHireDate(dateToUse);
-        dummyData.setGender("test");
-        dummyData.setMaritalStatus("test");
-        dummyData.setCurrentPosition("test");
-
-        var dummyContact = new EmployeeContact();
-        dummyContact.setContactInfo("test");
-        dummyContact.setIsPrimary(false);
-        var dummyContactList = new ArrayList<EmployeeContact>();
-        dummyContactList.add(dummyContact);
-        dummyData.setContacts(dummyContactList);
-
-        var dummyAddress = new EmployeeAddress();
-        dummyAddress.setAddress1("test");
-        dummyAddress.setAddress2("test");
-        dummyAddress.setIsPrimary(false);
-        var dummyAddressList = new ArrayList<EmployeeAddress>();
-        dummyAddressList.add(dummyAddress);
-        dummyData.setAddresses(dummyAddressList);
-        return dummyData;
-    }
-
-    Employee generateTestPersistedEmployee(ZonedDateTime dateToUse) {
-        var dummy = generateTestEmployee(dateToUse);
-        dummy.setEmployeeId(1);
-        dummy.setCreatedOn(dateNow);
-        dummy.setUpdatedOn(dateNow);
-        dummy.setContacts(dummy.getContacts().stream().peek(c -> {
-            c.setContactId(1);
-            c.setIsPrimary(false);
-            c.setCreatedOn(dateNow);
-            c.setUpdatedOn(dateNow);
-        }).collect(Collectors.toList()));
-        dummy.setAddresses(dummy.getAddresses().stream().peek(c -> {
-            c.setAddressId(1);
-            c.setAddress1("test");
-            c.setAddress2("test");
-            c.setIsPrimary(false);
-            c.setCreatedOn(dateNow);
-            c.setUpdatedOn(dateNow);
-        }).collect(Collectors.toList()));
-        return dummy;
-
-
     }
 }
