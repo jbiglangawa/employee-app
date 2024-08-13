@@ -2,6 +2,8 @@ package com.employee.legalmatch.EmployeeSystem.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "EmployeeContact")
@@ -18,7 +20,9 @@ public class EmployeeContact {
     @Column(name = "IsPrimary")
     private Boolean isPrimary;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne
     @JoinColumn(name = "EmployeeId")
     private Employee employee;
 }

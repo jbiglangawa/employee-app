@@ -38,4 +38,14 @@ public class GraphQlController {
     public Integer createEmployee(@Argument Employee employee) {
         return employeeService.createEmployee(employee);
     }
+
+    @MutationMapping
+    public Integer updateEmployee(@Argument Integer employeeId, @Argument Employee employee) {
+        return employeeService.updateEmployee(employeeId, employee);
+    }
+
+    @MutationMapping
+    public Integer deleteEmployee(@Argument Integer employeeId) {
+        return employeeService.deleteEmployee(employeeId);
+    }
 }

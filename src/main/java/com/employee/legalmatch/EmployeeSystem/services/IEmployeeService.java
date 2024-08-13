@@ -9,4 +9,8 @@ public interface IEmployeeService {
     List<Employee> getEmployees(PageSize pageSize);
 
     Integer createEmployee(Employee employee);
+
+    Integer updateEmployee(Integer employeeId, Employee employee);
+
+    Integer deleteEmployee(Integer employeeId);
 }

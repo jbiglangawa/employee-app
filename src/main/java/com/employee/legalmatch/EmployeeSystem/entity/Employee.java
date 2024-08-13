@@ -43,10 +43,10 @@ public class Employee {
     @Column(name = "CurrentPosition")
     private String currentPosition;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<EmployeeContact> contacts = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<EmployeeAddress> addresses = new ArrayList<>();
 
 }
