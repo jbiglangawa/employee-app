@@ -33,7 +33,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public List<Employee> getEmployees(PageSize pageSize) {
-        return employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size(), Sort.by("DESC", "createdOn")))
+        return employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size(), Sort.by(Sort.Direction.DESC, "employeeId")))
                 .get()
                 .collect(Collectors.toList());
     }
