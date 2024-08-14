@@ -80,6 +80,10 @@ const setupListeners = () => {
     document.getElementById('close-dialog').addEventListener('click', () => {
         document.getElementById("edit-employee-dialog").open = false
     });
+    document.getElementById('delete').addEventListener('click', () => {
+        deleteEmployee(Number(document.getElementById('employeeId').value))
+        document.getElementById("edit-employee-dialog").open = false
+    })
 
     handleNavigation(navStart, () => 0);
     handleNavigation(navBackward, () => states.currentPage - 1);
@@ -131,8 +135,11 @@ const openEmployeeFormModal = async (employeeId) => {
         addressInfoTableBody.innerHTML = ""
         contacts.forEach(c => addContactInfo(c))
         addresses.forEach(a => addAddressInfo(a))
+
+        document.getElementById('delete').classList.remove('hidden')
     }else {
         document.getElementById("edit-employee-dialog-title").innerHTML = "NEW EMPLOYEE REGISTRATION"
+        document.getElementById('delete').classList.add('hidden')
     }
 }
 
