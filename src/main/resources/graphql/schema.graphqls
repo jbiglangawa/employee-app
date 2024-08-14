@@ -1,5 +1,6 @@
 type Query {
     getEmployees(pageSize: PageSize!): PagedEmployee
+    getEmployeeById(employeeId: Int!): Employee
 }
 
 type Mutation {

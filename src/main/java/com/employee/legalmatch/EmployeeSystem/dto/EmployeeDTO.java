@@ -14,7 +14,6 @@ public class EmployeeDTO {
     private String firstName;
     private String lastName;
     private String middleName;
-    private Integer age;
     private ZonedDateTime birthDate;
     private ZonedDateTime hireDate;
     private String gender;

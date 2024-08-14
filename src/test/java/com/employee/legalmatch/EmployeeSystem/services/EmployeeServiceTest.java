@@ -2,6 +2,7 @@ package com.employee.legalmatch.EmployeeSystem.services;
 
 import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.dto.PageSize;
+import com.employee.legalmatch.EmployeeSystem.dto.PagedEmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
@@ -60,12 +61,35 @@ public class EmployeeServiceTest {
         var employeeFromDB = generateTestPersistedEmployee(dateNow);
         var databaseResponse = new PageImpl<>(List.of(employeeFromDB), PageRequest.of(0, 10), 1);
 
-        var expected = List.of(generateTestPersistedEmployee(dateNow));
+        var mapped = new PagedEmployeeDTO();
+        mapped.setEmployees(List.of(generateTestPersistedEmployeeDTO(dateNow)));
+        mapped.setTotalCount(1L);
+
+        var expected = new PagedEmployeeDTO();
+        expected.setEmployees(List.of(generateTestPersistedEmployeeDTO(dateNow)));
+        expected.setTotalCount(1L);
 
         when(employeeRepository.findAll(any(Pageable.class))).thenReturn(databaseResponse);
+        when(employeeRepository.count()).thenReturn(1L);
+        when(employeeMapper.map(any(), anyLong())).thenReturn(mapped);
 
         var pageSizeRequest = new PageSize(0, 10);
         var actual = employeeServiceInTest.getEmployees(pageSizeRequest);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetEmployeeById() {
+        var employeeFromDB = generateTestPersistedEmployee(dateNow);
+        var employeeDto = generateTestPersistedEmployeeDTO(dateNow);
+
+        var expected = generateTestPersistedEmployeeDTO(dateNow);
+
+        when(employeeRepository.findById(anyLong())).thenReturn(Optional.of(employeeFromDB));
+        when(employeeMapper.map(any(Employee.class))).thenReturn(employeeDto);
+
+        var actual = employeeServiceInTest.getEmployeeById(1);
 
         assertEquals(expected, actual);
     }
@@ -126,7 +150,6 @@ public class EmployeeServiceTest {
         request.setFirstName("Changed");
         request.setLastName("Changed");
         request.setMiddleName("Changed");
-        request.setAge(35);
         request.setBirthDate(dateNow);
         request.setHireDate(dateNow);
         request.setGender("Changed");
@@ -138,7 +161,6 @@ public class EmployeeServiceTest {
         afterSave.setFirstName("Changed");
         afterSave.setLastName("Changed");
         afterSave.setMiddleName("Changed");
-        afterSave.setAge(35);
         afterSave.setBirthDate(dateNow);
         afterSave.setHireDate(dateNow);
         afterSave.setGender("Changed");
@@ -150,7 +172,6 @@ public class EmployeeServiceTest {
         expected.setFirstName("Changed");
         expected.setLastName("Changed");
         expected.setMiddleName("Changed");
-        expected.setAge(35);
         expected.setBirthDate(dateNow);
         expected.setHireDate(dateNow);
         expected.setGender("Changed");

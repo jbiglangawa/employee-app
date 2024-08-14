@@ -15,7 +15,6 @@ public class TestDataGenerator {
         dummyData.setFirstName("test");
         dummyData.setLastName("test");
         dummyData.setMiddleName("test");
-        dummyData.setAge(30);
         dummyData.setBirthDate(dateToUse);
         dummyData.setHireDate(dateToUse);
         dummyData.setGender("test");
@@ -44,7 +43,6 @@ public class TestDataGenerator {
         dummyData.setFirstName("test");
         dummyData.setLastName("test");
         dummyData.setMiddleName("test");
-        dummyData.setAge(30);
         dummyData.setBirthDate(dateToUse);
         dummyData.setHireDate(dateToUse);
         dummyData.setGender("test");
@@ -73,6 +71,26 @@ public class TestDataGenerator {
         dummy.setEmployeeId(1);
         dummy.setCreatedOn(dateToUse);
         dummy.setUpdatedOn(dateToUse);
+        dummy.setContacts(dummy.getContacts().stream().peek(c -> {
+            c.setContactId(1);
+            c.setIsPrimary(false);
+            c.setCreatedOn(dateToUse);
+            c.setUpdatedOn(dateToUse);
+        }).collect(Collectors.toList()));
+        dummy.setAddresses(dummy.getAddresses().stream().peek(c -> {
+            c.setAddressId(1);
+            c.setAddress1("test");
+            c.setAddress2("test");
+            c.setIsPrimary(false);
+            c.setCreatedOn(dateToUse);
+            c.setUpdatedOn(dateToUse);
+        }).collect(Collectors.toList()));
+        return dummy;
+    }
+
+    public static EmployeeDTO generateTestPersistedEmployeeDTO(ZonedDateTime dateToUse) {
+        var dummy = generateTestEmployeeDTO(dateToUse);
+        dummy.setEmployeeId(1);
         dummy.setContacts(dummy.getContacts().stream().peek(c -> {
             c.setContactId(1);
             c.setIsPrimary(false);

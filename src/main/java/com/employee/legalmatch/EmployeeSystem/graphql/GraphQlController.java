@@ -26,6 +26,11 @@ public class GraphQlController {
         return employeeService.getEmployees(pageSize);
     }
 
+    @QueryMapping
+    public EmployeeDTO getEmployeeById(@Argument Integer employeeId) {
+        return employeeService.getEmployeeById(employeeId);
+    }
+
     @SchemaMapping
     public List<EmployeeContact> contacts(EmployeeDTO employee) {
         return employee.getContacts();

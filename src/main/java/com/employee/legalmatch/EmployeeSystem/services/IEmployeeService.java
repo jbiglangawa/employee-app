@@ -8,6 +8,8 @@ import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 public interface IEmployeeService {
     PagedEmployeeDTO getEmployees(PageSize pageSize);
 
+    EmployeeDTO getEmployeeById(Integer employeeId);
+
     Employee createEmployee(EmployeeDTO employee);
 
     Employee updateEmployee(EmployeeDTO employee);

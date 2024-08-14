@@ -42,6 +42,13 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
+    public EmployeeDTO getEmployeeById(Integer employeeId) {
+        var employeeById = employeeRepository.findById(employeeId.longValue())
+                .orElseThrow(() -> new EntityNotFoundException("ID " + employeeId + " could not be found"));
+        return employeeMapper.map(employeeById);
+    }
+
+    @Override
     public Employee createEmployee(EmployeeDTO employee) {
         return employeeRepository.saveAndFlush(employeeMapper.map(employee));
     }
