@@ -12,7 +12,7 @@ let contactInfoTableBody = document.getElementById("contact-info-table-body");
 let addressInfoTableBody = document.getElementById("address-info-table-body");
 
 const renderEmployeeTable = async () => {
-    let response = await fetchEmployeeData(states.currentPage)
+    let response = await getAllEmployees(states.currentPage)
     states.lastPage = (response.data.getEmployees.totalCount / 10).toFixed(0)
 
     document.getElementById("employee-table").innerHTML =
@@ -22,13 +22,13 @@ const renderEmployeeTable = async () => {
             return `
                 <tr>
                     <th scope="row">${[employee.firstName, employee.middleName, employee.lastName].join(' ')}</th>
-                    <td>${primaryAddress ? [primaryAddress.address1, primaryAddress.address2].join(' ') : ''}</td>
-                    <td>${primaryContact ? primaryContact.contactInfo : ''}</td>
+                    <td>${primaryAddress ? [primaryAddress.address1, primaryAddress.address2].join(' ') : '<i class="whisper">None provided...</i>'}</td>
+                    <td>${primaryContact ? primaryContact.contactInfo : '<i class="whisper">None provided...</i>'}</td>
                     <td>${calculateAge(employee.birthDate)}</td>
                     <td>${getLengthOfStay(moment(employee.hireDate))}</td>
                     <td>
                         <div class="grid">
-                            <i class="fas fa-edit clickeable-icon" onclick=""></i>
+                            <i class="fas fa-edit clickeable-icon" onclick="updateEmployee(${employee.employeeId})"></i>
                             <i class="fas fa-trash clickeable-icon" onclick="deleteEmployee(${employee.employeeId})"></i>
                         </div>
                     </td>
@@ -108,12 +108,24 @@ window.onload = async () => {
 
 
 const openEmployeeFormModal = (employeeId) => {
+    resetEmployeeFormModal()
     document.getElementById("edit-employee-dialog").open = true
 
     // If employeeId is not null, modal is for existing employee
     if(employeeId) {
         document.getElementById("edit-employee-dialog-title").innerHTML = "UPDATE EMPLOYEE INFORMATION"
+
+    }else {
+        document.getElementById("edit-employee-dialog-title").innerHTML = "NEW EMPLOYEE REGISTRATION"
     }
+}
+
+const resetEmployeeFormModal = () => {
+    document.getElementById("regis-form").reset();
+    contactInfoTableBody.innerHTML = ""
+    addressInfoTableBody.innerHTML = ""
+    addContactInfo()
+    addAddressInfo()
 }
 
 const saveEmployeeData = async () => {
@@ -122,11 +134,60 @@ const saveEmployeeData = async () => {
     if(!valid) return
 
     var formData = new FormData(document.getElementById("regis-form"));
-    await createEmployee({...Object.fromEntries(formData), contactSize: contactInfoTableBody.children.length, addressSize: addressInfoTableBody.children.length});
+    await createEmployee(sanitizeFormData({...Object.fromEntries(formData), contactSize: contactInfoTableBody.children.length, addressSize: addressInfoTableBody.children.length}));
     setTimeout(() => {
         renderEmployeeTable();
         document.getElementById("edit-employee-dialog").open = false;
     }, 1000)
+}
+
+const sanitizeFormData = (formData) => {
+    formData.contacts = []
+    formData.addresses = []
+    
+    if(formData.contactSize) {
+        let keys = Object.keys(formData).filter(key => key.startsWith("contact-"))
+        let groupedKeys = Object.groupBy(keys, (key) => {
+            let keySplit = key.split("-")
+            return keySplit[keySplit.length - 1]
+        })
+        Object.keys(groupedKeys).forEach(key => {
+            formData.contacts.push({
+                contactInfo: formData["contact-info-" + key],
+                isPrimary: formData["contact-is-primary-" + key] == "on"
+            })
+        })
+    }
+
+    if(formData.addressSize) {
+        let keys = Object.keys(formData).filter(key => key.startsWith("address-"))
+        let groupedKeys = Object.groupBy(keys, (key) => {
+            let keySplit = key.split("-")
+            return keySplit[keySplit.length - 1]
+        })
+        Object.keys(groupedKeys).forEach(key => {
+            formData.addresses.push({
+                address1: formData["address1-" + key],
+                address2: formData["address2-" + key],
+                isPrimary: formData["address-is-primary-" + key] == "on"
+            })
+        })
+    }
+
+    return {
+        employee: {
+            firstName: formData.firstName, 
+            lastName: formData.lastName, 
+            middleName: formData.middleName, 
+            gender: formData.gender, 
+            maritalStatus: formData.maritalStatus, 
+            currentPosition: formData.currentPosition, 
+            birthDate: formatDate(formData.birthDate), 
+            hireDate: formatDate(formData.hireDate), 
+            contacts: formData.contacts, 
+            addresses: formData.addresses
+        }
+    }
 }
 
 const closeRow = (rowId) => {
@@ -146,7 +207,6 @@ const addContactInfo = () => {
             <td><input type="checkbox" name="contact-is-primary-${currentLength}" /></td>
             <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-${currentLength}')"></i></td>
         </tr>`)
-        
 }
 
 const addAddressInfo = () => {
@@ -168,6 +228,10 @@ const addAddressInfo = () => {
             <td><input type="checkbox" name="address-is-primary-${currentLength}"></td>
             <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-${currentLength}')"></i></td>
         </tr>`)
+}
+
+const updateEmployee = async (employeeId) => {
+    openEmployeeFormModal(employeeId)
 }
 
 const deleteEmployee = async (employeeId) => {
