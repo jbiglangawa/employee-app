@@ -90,3 +90,7 @@ button.rounded {
 .hidden {
     display: none;
 }
+
+.navigation button {
+    margin: 3px;
+}

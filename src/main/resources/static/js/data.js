@@ -1,4 +1,4 @@
-const fetchEmployeeData = async () => {
+const fetchEmployeeData = async (page) => {
     const res = await fetch(serverUrl + '/graphql', {
         method: 'POST',
         headers: {
@@ -7,7 +7,7 @@ const fetchEmployeeData = async () => {
         body: JSON.stringify({
             query: `
                 query GetEmployees {
-                    getEmployees(pageSize: {page: 0, size: 10}) {
+                    getEmployees(pageSize: {page: ${page}, size: 10}) {
                         employees {
                             employeeId
                             firstName

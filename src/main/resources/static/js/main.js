@@ -1,5 +1,19 @@
+let states = {
+    currentPage: 0,
+    lastPage: 0
+}
+
+let navStart = document.getElementById('nav-start')
+let navBackward = document.getElementById('nav-backward')
+let navForward = document.getElementById('nav-forward')
+let navEnd = document.getElementById('nav-end')
+
+let contactInfoTableBody = document.getElementById("contact-info-table-body");
+let addressInfoTableBody = document.getElementById("address-info-table-body");
+
 const renderEmployeeTable = async () => {
-    let response = await fetchEmployeeData()
+    let response = await fetchEmployeeData(states.currentPage)
+    states.lastPage = (response.data.getEmployees.totalCount / 10).toFixed(0)
 
     document.getElementById("employee-table").innerHTML =
         response.data.getEmployees.employees.map(employee => {
@@ -22,10 +36,53 @@ const renderEmployeeTable = async () => {
             `}).join('')
 }
 
+const renderTableButtonNavigationButtons = () => {
+    if(states.lastPage > 0) {
+        if(states.currentPage > 0) {
+            navStart.disabled = false
+            navStart.classList.remove('outline')
+            navBackward.disabled = false
+            navBackward.classList.remove('outline')
+        }else {
+            navStart.disabled = true
+            navStart.classList.add('outline')
+            navBackward.disabled = true
+            navBackward.classList.add('outline')
+        }
+        if(states.currentPage < states.lastPage) {
+            navForward.disabled = false
+            navForward.classList.remove('outline')
+            navEnd.disabled = false
+            navEnd.classList.remove('outline')
+        }else {
+            navForward.disabled = true
+            navForward.classList.add('outline')
+            navEnd.disabled = true
+            navEnd.classList.add('outline')
+        }
+    }
+}
+
+const handleNavigation = (button, pageHandle) => {
+    button.addEventListener('click', () => {
+        const newPage = pageHandle();
+        if(newPage >= 0 || newPage <= states.lastPage) {
+            states.currentPage = newPage;
+            renderEmployeeTable()
+                .then(() => renderTableButtonNavigationButtons())
+        }
+    });
+}
+
 const setupListeners = () => {
     document.getElementById('close-dialog').addEventListener('click', () => {
         document.getElementById("edit-employee-dialog").open = false
-    })
+    });
+
+    handleNavigation(navStart, () => 0);
+    handleNavigation(navBackward, () => states.currentPage - 1);
+    handleNavigation(navForward, () => states.currentPage + 1);
+    handleNavigation(navEnd, () => states.lastPage);
 }
 
 const setupValidation = () => {
@@ -40,16 +97,15 @@ const setupValidation = () => {
     }
 }
 
-const init = () => {
-    renderEmployeeTable();
+window.onload = async () => {
+    await renderEmployeeTable();
+    renderTableButtonNavigationButtons();
     setupListeners();
     setupValidation();
 }
 
-window.onload = init
+/* Post-onload handlers */
 
-var contactInfoTableBody = document.getElementById("contact-info-table-body");
-var addressInfoTableBody = document.getElementById("address-info-table-body");
 
 const openEmployeeFormModal = (employeeId) => {
     document.getElementById("edit-employee-dialog").open = true
@@ -117,4 +173,9 @@ const addAddressInfo = () => {
 const deleteEmployee = async (employeeId) => {
     await deleteEmployeeById(employeeId);
     await renderEmployeeTable();
+}
+
+const navigate = (page) => {
+    states.currentPage = page;
+    renderEmployeeTable();
 }
