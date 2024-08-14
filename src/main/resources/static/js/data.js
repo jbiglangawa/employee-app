@@ -54,22 +54,16 @@ const getEmployeeById = (employeeId) => {
                 gender
                 maritalStatus
                 currentPosition
-                createdOn
-                updatedOn
                 contacts {
                     contactId
                     contactInfo
                     isPrimary
-                    createdOn
-                    updatedOn
                 }
                 addresses {
                     addressId
                     address1
                     address2
                     isPrimary
-                    createdOn
-                    updatedOn
                 }
             }
         }`, {employeeId})
@@ -79,6 +73,13 @@ const createEmployee = (employee) => {
     return sendRequest(`
         mutation CreateEmployee($employee: CreateEmployeeInput!) {
             createEmployee(employee: $employee)
+        }`, employee)
+}
+
+const updateEmployee = (employee) => {
+    return sendRequest(`
+        mutation UpdateEmployee($employee: UpdateEmployeeInput!) {
+            updateEmployee(employee: $employee)
         }`, employee)
 }
 

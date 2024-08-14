@@ -28,7 +28,7 @@ const renderEmployeeTable = async () => {
                     <td>${getLengthOfStay(moment(employee.hireDate))}</td>
                     <td>
                         <div class="grid">
-                            <i class="fas fa-edit clickeable-icon" onclick="updateEmployee(${employee.employeeId})"></i>
+                            <i class="fas fa-edit clickeable-icon" onclick="openUpdateEmployeeModal(${employee.employeeId})"></i>
                             <i class="fas fa-trash clickeable-icon" onclick="deleteEmployee(${employee.employeeId})"></i>
                         </div>
                     </td>
@@ -107,14 +107,28 @@ window.onload = async () => {
 /* Post-onload handlers */
 
 
-const openEmployeeFormModal = (employeeId) => {
+const openEmployeeFormModal = async (employeeId) => {
     resetEmployeeFormModal()
     document.getElementById("edit-employee-dialog").open = true
 
     // If employeeId is not null, modal is for existing employee
     if(employeeId) {
         document.getElementById("edit-employee-dialog-title").innerHTML = "UPDATE EMPLOYEE INFORMATION"
-
+        const employeeById = await getEmployeeById(employeeId);
+        const {contacts, addresses, ...employeeBasicFields} = employeeById.data.getEmployeeById
+        
+        // Basic Fields
+        employeeBasicFields.birthDate = moment(employeeBasicFields.birthDate).format("yyyy-MM-DD")
+        employeeBasicFields.hireDate = moment(employeeBasicFields.hireDate).format("yyyy-MM-DD")
+        Object.keys(employeeBasicFields).forEach(key => {
+            document.getElementsByName(key)[0].value = employeeBasicFields[key]
+        })
+        
+        // Contact and Address
+        contactInfoTableBody.innerHTML = ""
+        addressInfoTableBody.innerHTML = ""
+        contacts.forEach(c => addContactInfo(c))
+        addresses.forEach(a => addAddressInfo(a))
     }else {
         document.getElementById("edit-employee-dialog-title").innerHTML = "NEW EMPLOYEE REGISTRATION"
     }
@@ -130,11 +144,22 @@ const resetEmployeeFormModal = () => {
 
 const saveEmployeeData = async () => {
     const valid = validateRequiredFields()
-    
-    if(!valid) return
+    if(!valid) 
+        return
 
-    var formData = new FormData(document.getElementById("regis-form"));
-    await createEmployee(sanitizeFormData({...Object.fromEntries(formData), contactSize: contactInfoTableBody.children.length, addressSize: addressInfoTableBody.children.length}));
+    var formData = Object.fromEntries(new FormData(document.getElementById("regis-form")));
+    var sanitized = sanitizeFormData({
+        ...formData, 
+        contactSize: contactInfoTableBody.children.length, 
+        addressSize: addressInfoTableBody.children.length
+    });
+    
+    if(sanitized.employee.employeeId) {
+        await updateEmployee(sanitized);
+    }else {
+        await createEmployee(sanitized);
+    }
+    
     setTimeout(() => {
         renderEmployeeTable();
         document.getElementById("edit-employee-dialog").open = false;
@@ -153,6 +178,7 @@ const sanitizeFormData = (formData) => {
         })
         Object.keys(groupedKeys).forEach(key => {
             formData.contacts.push({
+                contactId: formData["contact-id-" + key],
                 contactInfo: formData["contact-info-" + key],
                 isPrimary: formData["contact-is-primary-" + key] == "on"
             })
@@ -167,6 +193,7 @@ const sanitizeFormData = (formData) => {
         })
         Object.keys(groupedKeys).forEach(key => {
             formData.addresses.push({
+                addressId: formData["address-id-" + key],
                 address1: formData["address1-" + key],
                 address2: formData["address2-" + key],
                 isPrimary: formData["address-is-primary-" + key] == "on"
@@ -174,7 +201,7 @@ const sanitizeFormData = (formData) => {
         })
     }
 
-    return {
+    let sanitizedData = {
         employee: {
             firstName: formData.firstName, 
             lastName: formData.lastName, 
@@ -188,49 +215,60 @@ const sanitizeFormData = (formData) => {
             addresses: formData.addresses
         }
     }
+    if(formData.employeeId) {
+        sanitizedData.employee.employeeId = Number(formData.employeeId);
+        sanitizedData.employee.clearContacts = formData.contacts.length == 0
+        sanitizedData.employee.clearAddresses = formData.addresses.length == 0
+        return sanitizedData
+    }
+    
+    return sanitizedData
+    
 }
 
 const closeRow = (rowId) => {
     document.getElementById(rowId).remove()
 }
 
-const addContactInfo = () => {
-    const currentLength = contactInfoTableBody.children.length + 1;
+const addContactInfo = (contact) => {
+    const i = contactInfoTableBody.children.length + 1;
     $('#contact-info-table-body').append(`
-        <tr id="contact-${currentLength}">
+        <tr id="contact-${i}">
             <th scope="row">
-                <input type="text" name="contact-info-${currentLength}" maxlength=100
+                ${contact && contact?.contactId ? `<span name="contact-id-${i}" class="hidden">${contact?.contactId}</span>` : ''}
+                <input type="text" name="contact-info-${i}" maxlength=100
                     class="required validate-maxlength" placeholder="Contact Information"
-                    aria-label="Contact Information">
-                <small id="contact-info-${currentLength}-helper"></small>
+                    aria-label="Contact Information" value="${contact && contact?.contactInfo ? contact?.contactInfo : ''}">
+                <small id="contact-info-${i}-helper"></small>
             </th>
-            <td><input type="checkbox" name="contact-is-primary-${currentLength}" /></td>
-            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-${currentLength}')"></i></td>
+            <td><input type="checkbox" name="contact-is-primary-${i}" ${contact && contact?.isPrimary ? 'checked' : ''} /></td>
+            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-${i}')"></i></td>
         </tr>`)
 }
 
-const addAddressInfo = () => {
-    const currentLength = addressInfoTableBody.children.length + 1;
+const addAddressInfo = (address) => {
+    const i = addressInfoTableBody.children.length + 1;
     $('#address-info-table-body').append(`
-        <tr id="address-${currentLength}">
+        <tr id="address-${i}">
             <th scope="row">
-                <input type="text" name="address1-${currentLength}" maxlength=500
+                ${address && address?.addressId ? `<span name="address-id-${i}" class="hidden">${address?.addressId}</span>` : ''}
+                <input type="text" name="address1-${i}" maxlength=500
                     class="required validate-maxlength" placeholder="Address 1"
-                    aria-label="Address 1">
-                <small id="address1-${currentLength}-helper"></small>
+                    aria-label="Address 1" value="${address && address?.address1 ? address?.address1 : ''}">
+                <small id="address1-${i}-helper"></small>
             </th>
             <td>
-                <input type="text" name="address2-${currentLength}" maxlength=500
+                <input type="text" name="address2-${i}" maxlength=500
                     class="required validate-maxlength" placeholder="Address 2"
-                    aria-label="Address 2">
-                <small id="address2-${currentLength}-helper"></small>
+                    aria-label="Address 2" value="${address && address?.address2 ? address?.address2 : ''}">
+                <small id="address2-${i}-helper"></small>
             </td>
-            <td><input type="checkbox" name="address-is-primary-${currentLength}"></td>
-            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-${currentLength}')"></i></td>
+            <td><input type="checkbox" name="address-is-primary-${i}" ${address && address.isPrimary ? 'checked' : ''}></td>
+            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-${i}')"></i></td>
         </tr>`)
 }
 
-const updateEmployee = async (employeeId) => {
+const openUpdateEmployeeModal = async (employeeId) => {
     openEmployeeFormModal(employeeId)
 }
 
