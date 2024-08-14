@@ -1,5 +1,5 @@
 type Query {
-    getEmployees(pageSize: PageSize!): [Employee]
+    getEmployees(pageSize: PageSize!): PagedEmployee
 }
 
 type Mutation {
@@ -9,6 +9,11 @@ type Mutation {
 }
 
 scalar ZonedDateTime
+
+type PagedEmployee {
+    employees: [Employee]
+    totalCount: Int
+}
 
 type Employee {
     employeeId: Int

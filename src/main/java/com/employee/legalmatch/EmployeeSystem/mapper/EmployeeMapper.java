@@ -1,8 +1,11 @@
 package com.employee.legalmatch.EmployeeSystem.mapper;
 
 import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
+import com.employee.legalmatch.EmployeeSystem.dto.PagedEmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EmployeeMapper implements IEmployeeMapper {
@@ -23,4 +26,28 @@ public class EmployeeMapper implements IEmployeeMapper {
         return newEmployee;
     }
 
+    @Override
+    public EmployeeDTO map(Employee employee) {
+        var dto = new EmployeeDTO();
+        dto.setEmployeeId(employee.getEmployeeId());
+        dto.setFirstName(employee.getFirstName());
+        dto.setLastName(employee.getLastName());
+        dto.setMiddleName(employee.getMiddleName());
+        dto.setBirthDate(employee.getBirthDate());
+        dto.setHireDate(employee.getHireDate());
+        dto.setMaritalStatus(employee.getMaritalStatus());
+        dto.setCurrentPosition(employee.getCurrentPosition());
+        dto.setGender(employee.getGender());
+        dto.setContacts(employee.getContacts());
+        dto.setAddresses(employee.getAddresses());
+        return dto;
+    }
+
+    @Override
+    public PagedEmployeeDTO map(List<Employee> dto, Long totalCount) {
+        var pagedEmployeeDTO = new PagedEmployeeDTO();
+        pagedEmployeeDTO.setEmployees(dto.stream().map(this::map).toList());
+        pagedEmployeeDTO.setTotalCount(totalCount);
+        return pagedEmployeeDTO;
+    }
 }

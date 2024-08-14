@@ -2,6 +2,7 @@ package com.employee.legalmatch.EmployeeSystem.services;
 
 import com.employee.legalmatch.EmployeeSystem.dto.PageSize;
 import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
+import com.employee.legalmatch.EmployeeSystem.dto.PagedEmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +32,13 @@ public class EmployeeService implements IEmployeeService {
     private final IEmployeeMapper employeeMapper;
 
     @Override
-    public List<Employee> getEmployees(PageSize pageSize) {
-        return employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size(), Sort.by(Sort.Direction.DESC, "employeeId")))
+    public PagedEmployeeDTO getEmployees(PageSize pageSize) {
+        long totalCount = employeeRepository.count();
+
+        var results = employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size(), Sort.by(Sort.Direction.DESC, "employeeId")))
                 .get()
-                .collect(Collectors.toList());
+                .toList();
+        return employeeMapper.map(results, totalCount);
     }
 
     @Override

@@ -8,20 +8,23 @@ const fetchEmployeeData = async () => {
             query: `
                 query GetEmployees {
                     getEmployees(pageSize: {page: 0, size: 10}) {
-                        employeeId
-                        firstName
-                        lastName
-                        middleName
-                        birthDate
-                        hireDate
-                        contacts {
-                            contactInfo
-                            isPrimary
+                        employees {
+                            employeeId
+                            firstName
+                            lastName
+                            middleName
+                            birthDate
+                            hireDate
+                            contacts {
+                                contactInfo
+                                isPrimary
+                            }
+                            addresses {
+                                address1
+                                isPrimary
+                            }
                         }
-                        addresses {
-                            address1
-                            isPrimary
-                        }
+                        totalCount
                     }
                 }`
         })

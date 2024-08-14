@@ -2,6 +2,7 @@ package com.employee.legalmatch.EmployeeSystem.graphql;
 
 import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.dto.PageSize;
+import com.employee.legalmatch.EmployeeSystem.dto.PagedEmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
@@ -21,17 +22,17 @@ public class GraphQlController {
     private final IEmployeeService employeeService;
 
     @QueryMapping
-    public List<Employee> getEmployees(@Argument PageSize pageSize) {
+    public PagedEmployeeDTO getEmployees(@Argument PageSize pageSize) {
         return employeeService.getEmployees(pageSize);
     }
 
     @SchemaMapping
-    public List<EmployeeContact> contacts(Employee employee) {
+    public List<EmployeeContact> contacts(EmployeeDTO employee) {
         return employee.getContacts();
     }
 
     @SchemaMapping
-    public List<EmployeeAddress> addresses(Employee employee) {
+    public List<EmployeeAddress> addresses(EmployeeDTO employee) {
         return employee.getAddresses();
     }
 

@@ -2,12 +2,11 @@ package com.employee.legalmatch.EmployeeSystem.services;
 
 import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.dto.PageSize;
+import com.employee.legalmatch.EmployeeSystem.dto.PagedEmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 
-import java.util.List;
-
 public interface IEmployeeService {
-    List<Employee> getEmployees(PageSize pageSize);
+    PagedEmployeeDTO getEmployees(PageSize pageSize);
 
     Employee createEmployee(EmployeeDTO employee);
 

@@ -2,7 +2,7 @@ const renderEmployeeTable = async () => {
     let response = await fetchEmployeeData()
 
     document.getElementById("employee-table").innerHTML =
-        response.data.getEmployees.map(employee => {
+        response.data.getEmployees.employees.map(employee => {
             let primaryAddress = employee.addresses.filter(a => a.isPrimary)[0];
             let primaryContact = employee.contacts.filter(a => a.isPrimary)[0];
             return `
