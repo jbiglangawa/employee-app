@@ -13,8 +13,10 @@ let addressInfoTableBody = document.getElementById("address-info-table-body");
 
 const renderEmployeeTable = async () => {
     let response = await getAllEmployees(states.currentPage)
-    states.lastPage = (response.data.getEmployees.totalCount / 10).toFixed(0)
 
+    states.lastPage = Math.trunc(response.data.getEmployees.totalCount / 10)
+    console.log(states.lastPage)
+    
     document.getElementById("employee-table").innerHTML =
         response.data.getEmployees.employees.map(employee => {
             let primaryAddress = employee.addresses.filter(a => a.isPrimary)[0];
@@ -135,6 +137,7 @@ const openEmployeeFormModal = async (employeeId) => {
 }
 
 const resetEmployeeFormModal = () => {
+    clearValidations()
     document.getElementById("regis-form").reset();
     contactInfoTableBody.innerHTML = ""
     addressInfoTableBody.innerHTML = ""
@@ -163,6 +166,7 @@ const saveEmployeeData = async () => {
     setTimeout(() => {
         renderEmployeeTable();
         document.getElementById("edit-employee-dialog").open = false;
+        saveSuccessToast.showToast();
     }, 1000)
 }
 
@@ -275,9 +279,12 @@ const openUpdateEmployeeModal = async (employeeId) => {
 const deleteEmployee = async (employeeId) => {
     await deleteEmployeeById(employeeId);
     await renderEmployeeTable();
+    deleteSuccessToast.showToast();
 }
 
 const navigate = (page) => {
     states.currentPage = page;
     renderEmployeeTable();
 }
+
+

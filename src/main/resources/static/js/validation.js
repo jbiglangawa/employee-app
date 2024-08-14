@@ -34,3 +34,11 @@ const validateRequiredFields = () => {
     }
     return allFieldsValid;
 }
+
+const clearValidations = () => {
+    var fieldsToValidate = document.getElementsByClassName("required");
+    for(var i = 0; i < fieldsToValidate.length; i++) {
+        fieldsToValidate.item(i).removeAttribute("aria-invalid")
+        document.getElementById(fieldsToValidate.item(i).name + "-helper").innerHTML = ""
+    }
+}

@@ -4,6 +4,14 @@
     --pico-font-weight: 300;
 }
 
+html {
+    background: rgb(19, 23, 31);
+    background: linear-gradient(0deg, rgba(19, 23, 31) 0%, rgb(26 32 46) 100%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
 header.landing-head {
     padding: 10px 5%;
     display: flex;
@@ -45,7 +53,7 @@ header.landing-head .features-checklist ul li:before {
 }
 
 .table-wrapper {
-    min-height: 400px;
+    min-height: 480px;
 }
 
 .right {
