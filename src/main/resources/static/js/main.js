@@ -293,4 +293,7 @@ const navigate = (page) => {
     renderEmployeeTable();
 }
 
-
+const logout = () => {
+    clearTokenFromStorage();
+    window.location.href = '/login';
+}
