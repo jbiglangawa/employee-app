@@ -7,8 +7,6 @@ import com.employee.legalmatch.EmployeeSystem.entity.Employee;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
 import com.employee.legalmatch.EmployeeSystem.mapper.IEmployeeMapper;
-import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeAddressRepository;
-import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeContactRepository;
 import com.employee.legalmatch.EmployeeSystem.repository.IEmployeeRepository;
 import com.employee.legalmatch.EmployeeSystem.util.CommonUtil;
 import jakarta.persistence.EntityManager;
@@ -26,8 +24,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class EmployeeService implements IEmployeeService {
     private final IEmployeeRepository employeeRepository;
-    private final IEmployeeContactRepository employeeContactRepository;
-    private final IEmployeeAddressRepository employeeAddressRepository;
     private final EntityManager entityManager;
 
     private final IEmployeeMapper employeeMapper;
