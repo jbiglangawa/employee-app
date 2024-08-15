@@ -145,8 +145,11 @@
                     placeholder="Contact Information" aria-label="Contact Information" data-static-disabled>
                   <small id="contact-info-1-helper"></small>
                 </th>
-                <td><input type="checkbox" name="contact-is-primary-1" data-static-disabled /></td>
-                <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-1')" data-static-hidden></i></td>
+                <td><input type="checkbox" name="contact-is-primary-1" data-contact-checkbox data-static-disabled
+                    onchange="primaryHandler(1, 'data-address-checkbox')" />
+                </td>
+                <td><i class=" fas fa-times clickeable-icon" onclick="closeRow('contact-1')" data-static-hidden></i>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -172,7 +175,8 @@
                     placeholder="Address 2" aria-label="Address 2" data-static-disabled>
                   <small id="address2-1-helper"></small>
                 </td>
-                <td><input type="checkbox" name="address-is-primary-1" data-static-disabled></td>
+                <td><input type="checkbox" name="address-is-primary-1" data-address-checkbox data-static-disabled
+                    onchange="primaryHandler(1, 'data-address-checkbox')"></td>
                 <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-1')" data-static-hidden></i></td>
               </tr>
             </tbody>

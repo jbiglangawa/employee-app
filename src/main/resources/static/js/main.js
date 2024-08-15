@@ -1,6 +1,8 @@
 let states = {
     currentPage: 0,
-    lastPage: 0
+    lastPage: 0,
+    checkedContactPrimary: 0,
+    checkedAddressPrimary: 0,
 }
 
 let navStart = document.getElementById('nav-start')
@@ -144,10 +146,28 @@ const openEmployeeFormModal = async (employeeId) => {
         })
         
         // Contact and Address
-        contactInfoTableBody.innerHTML = ""
-        addressInfoTableBody.innerHTML = ""
-        contacts.forEach(c => addContactInfo(c))
-        addresses.forEach(a => addAddressInfo(a))
+        contactInfoTableBody.innerHTML = "";
+        addressInfoTableBody.innerHTML = "";
+
+        const checkedContactPrimary = contacts.findIndex(c => c.isPrimary);
+        if(checkedContactPrimary !=-1) {
+            states.checkedContactPrimary = checkedContactPrimary + 1;
+        }
+        const checkedAddressPrimary = addresses.findIndex(a => a.isPrimary);
+        if(checkedAddressPrimary != -1) {
+            states.checkedAddressPrimary = checkedAddressPrimary + 1;
+        }
+
+        contacts.forEach(c => addContactInfo(c));
+        addresses.forEach(a => addAddressInfo(a));
+
+        // Handle after all elements are loaded in the screen
+        if(states.checkedContactPrimary > 0) {
+            primaryHandler(states.checkedContactPrimary, 'data-contact-checkbox');
+        }
+        if(states.checkedAddressPrimary > 0) {
+            primaryHandler(states.checkedAddressPrimary, 'data-address-checkbox');
+        }
 
         document.getElementById('delete').classList.remove('hidden')
     }else {
@@ -163,6 +183,8 @@ const resetEmployeeFormModal = () => {
     addressInfoTableBody.innerHTML = ""
     addContactInfo()
     addAddressInfo()
+    states.checkedContactPrimary = 0;
+    states.checkedAddressPrimary = 0;
 }
 
 const saveEmployeeData = async () => {
@@ -254,6 +276,21 @@ const closeRow = (rowId) => {
     document.getElementById(rowId).remove()
 }
 
+const primaryHandler = (id, query) => {
+    const name = (query == 'data-contact-checkbox') ? 'contact-is-primary-' : 'address-is-primary-';
+    const checkboxes = document.querySelectorAll(`[${query}]`);
+    const target = document.getElementsByName(name+id)[0]
+    for(const checkbox of checkboxes) {
+        if (checkbox.name != (name+id)) {
+            if(target.checked) {
+                checkbox.disabled = true;
+            }else {
+                checkbox.disabled = false;
+            }
+        }
+    }
+}
+
 const addContactInfo = (contact) => {
     const i = contactInfoTableBody.children.length + 1;
     $('#contact-info-table-body').append(`
@@ -265,7 +302,7 @@ const addContactInfo = (contact) => {
                     aria-label="Contact Information" value="${contact && contact?.contactInfo ? contact?.contactInfo : ''}" ${!isUserAndAdmin() ? 'disabled' : ''}>
                 <small id="contact-info-${i}-helper"></small>
             </th>
-            <td><input type="checkbox" name="contact-is-primary-${i}" ${contact && contact?.isPrimary ? 'checked' : ''} ${!isUserAndAdmin() ? 'disabled' : ''}/></td>
+            <td><input type="checkbox" name="contact-is-primary-${i}" data-contact-checkbox ${contact && contact?.isPrimary ? 'checked' : ''} ${!isUserAndAdmin() ? 'disabled' : ''} onchange="primaryHandler(${i}, 'data-contact-checkbox')" ${states.checkedContactPrimary > 0 && states.checkedContactPrimary != i ? 'disabled' : ''} /></td>
             <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-${i}')" ${!isUserAndAdmin() ? 'hidden' : ''}></i></td>
         </tr>`)
 }
@@ -287,7 +324,7 @@ const addAddressInfo = (address) => {
                     aria-label="Address 2" value="${address && address?.address2 ? address?.address2 : ''}" ${!isUserAndAdmin() ? 'disabled' : ''}>
                 <small id="address2-${i}-helper"></small>
             </td>
-            <td><input type="checkbox" name="address-is-primary-${i}" ${address && address.isPrimary ? 'checked' : ''} ${!isUserAndAdmin() ? 'disabled' : ''}></td>
+            <td><input type="checkbox" name="address-is-primary-${i}" data-address-checkbox ${address && address.isPrimary ? 'checked' : ''} ${!isUserAndAdmin() ? 'disabled' : ''} onchange="primaryHandler(${i}, 'data-address-checkbox')" ${states.checkedAddressPrimary > 0 && states.checkedAddressPrimary != i ? 'disabled' : ''}></td>
             <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-${i}')" ${!isUserAndAdmin() ? 'hidden' : ''}></i></td>
         </tr>`)
 }
