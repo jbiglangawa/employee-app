@@ -13,10 +13,13 @@
   <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 
   <title>LegalMatch - Employee Catalogue</title>
   <script type="text/javascript" th:inline="javascript">
-    var serverUrl = "http://192.168.1.8:8080" // [[${serverAddress}]];
+    var serverUrl = [[${ serverAddress }]];
   </script>
 </head>
 
@@ -49,11 +52,11 @@
         </tbody>
       </table>
     </div>
-    <div class="right">
-      <button class="outline secondary"><i class="fas fa-angle-double-left"></i></button>
-      <button class="outline secondary"><i class="fas fa-angle-left"></i></button>
-      <button class="outline secondary"><i class="fas fa-angle-right"></i></button>
-      <button class="outline secondary"><i class="fas fa-angle-double-right"></i></button>
+    <div class="right navigation">
+      <button class="outline secondary" id="nav-start" disabled><i class="fas fa-angle-double-left"></i></button>
+      <button class="outline secondary" id="nav-backward" disabled><i class="fas fa-angle-left"></i></button>
+      <button class="outline secondary" id="nav-forward" disabled><i class="fas fa-angle-right"></i></button>
+      <button class="outline secondary" id="nav-end" disabled><i class="fas fa-angle-double-right"></i></button>
     </div>
   </main>
   <dialog id="edit-employee-dialog" class="edit-employee-dialog">
@@ -73,6 +76,7 @@
       <p>
       <form id="regis-form" class="regis-wrapper">
         <div class="regis-form">
+          <input type="text" id="employeeId" name="employeeId" class="hidden"></span>
           <label>
             First Name
             <input type="text" name="firstName" placeholder="First Name" aria-label="First Name" maxlength="255"
@@ -111,9 +115,9 @@
           </label>
           <label>
             Position
-            <input type="text" name="position" placeholder="Position" aria-label="Position" maxlength="255"
+            <input type="text" name="currentPosition" placeholder="Position" aria-label="Position" maxlength="255"
               class="required validate-maxlength">
-            <small id="position-helper"></small>
+            <small id="currentPosition-helper"></small>
           </label>
           <label>
             Date Hired
@@ -182,6 +186,7 @@
   <script src="js/validation.js"></script>
   <script src="js/util.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/main.js"></script>
 </body>
 

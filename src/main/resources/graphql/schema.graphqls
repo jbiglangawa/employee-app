@@ -7,6 +7,7 @@ type Mutation {
     createEmployee(employee: CreateEmployeeInput!): Int
     updateEmployee(employee: UpdateEmployeeInput!): Int
     deleteEmployee(employeeId: Int!): Int
+    getToken(loginForm: LoginForm!): AuthToken
 }
 
 scalar ZonedDateTime
@@ -95,4 +96,14 @@ input CreateEmployeeInput {
     currentPosition: String
     contacts: [ContactInput]
     addresses: [AddressInput]
+}
+
+input LoginForm {
+    username: String,
+    password: String
+}
+
+type AuthToken {
+    token: String!,
+    roles: [String]
 }

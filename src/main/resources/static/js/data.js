@@ -1,14 +1,24 @@
 const sendRequest = (query, variables) => {
+    const headers = {
+        'content-type': 'application/json'
+    }
+    if(getTokenFromStorage()) {
+        headers['Authorization'] = `Bearer ${getTokenFromStorage().token}`
+    }
+
     return fetch(serverUrl + '/graphql', {
         method: 'POST',
-        headers: {
-            'content-type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify({
             query: query,
             variables: variables
         })
-    }).then(res => res.json())
+    }).then(res => {
+        if(res.status == 403 && window.location.href != "/login") {
+            window.location.href = '/login';
+        }
+        return res.json()
+    })
 }
 
 const getAllEmployees = (page) => {
@@ -88,4 +98,14 @@ const deleteEmployeeById = (employeeId) => {
         mutation DeleteEmployee($employeeId: Int!) {
             deleteEmployee(employeeId: $employeeId)
         }`, {employeeId})
+}
+
+const getToken = (loginForm) => {
+    return sendRequest(`
+        mutation GetToken($loginForm: LoginForm!) {
+            getToken(loginForm: $loginForm) {
+                token
+                roles
+            }
+        }`, {loginForm})
 }

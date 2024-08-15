@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<jjwt.version>0.11.5</jjwt.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,10 +39,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-graphql</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -67,11 +68,11 @@
 			<artifactId>spring-graphql-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.security</groupId>-->
-<!--			<artifactId>spring-security-test</artifactId>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
@@ -85,21 +86,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity-engine-core</artifactId>
-			<version>2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.velocity.tools</groupId>
-			<artifactId>velocity-tools-view</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.velocity.tools</groupId>
-			<artifactId>velocity-tools-generic</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
@@ -107,6 +93,21 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 	</dependencies>
 

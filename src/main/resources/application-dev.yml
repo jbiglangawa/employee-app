@@ -5,3 +5,5 @@ spring:
       allowed-origins:
         - http://localhost:8080
         - http://127.0.0.1:5500
+jwt:
+  secret: 4cff5c827496576b017eb40592c47d7ef7bf693be616e2e3cecd670157d5f9e4c98d08ca7e891dcfced803e29ba700b7da23a720d87b76ae3ff106e8a4080eb4f7ae62ac44d1624b02d9a724ed1d1cc8ef50997a4da090bdd45ca7c2f71fc62a83a3fe03538493cfc09d727e17690c54fbdba597f376ebbf909e3c730308882a
