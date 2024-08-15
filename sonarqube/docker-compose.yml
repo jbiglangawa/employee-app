@@ -15,6 +15,7 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_temp:/opt/sonarqube/temp
+
   sonar_db:
     image: postgres:13
     environment:
@@ -24,11 +25,12 @@ services:
     volumes:
       - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
-  volumes:
-    sonarqube_conf:
-    sonarqube_data:
-    sonarqube_extensions:
-    sonarqube_logs:
-    sonarqube_temp:
-    sonar_db:
-    sonar_db_data:
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_temp:
+  sonar_db:
+  sonar_db_data:
