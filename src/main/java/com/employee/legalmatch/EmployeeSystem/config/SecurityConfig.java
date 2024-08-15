@@ -31,7 +31,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeRequests(auth -> {
                 auth
-                        .requestMatchers("/login", "/", "/employee", "/graphql").permitAll()
+                        .requestMatchers("/login", "/", "/employee", "/graphql", "/health").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/templates/**").permitAll()
                         .anyRequest().authenticated();
             })
