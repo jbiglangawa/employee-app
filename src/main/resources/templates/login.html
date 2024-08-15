@@ -20,11 +20,29 @@
     <script type="text/javascript" th:inline="javascript">
         var serverUrl = [[${ serverAddress }]];
     </script>
+
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .login-card {
+            max-width: 400px;
+        }
+
+        .logo {
+            width: 70%;
+        }
+    </style>
 </head>
 
 <body>
-    <main class="container">
-        <article>
+    <main class="container center">
+        <article class="login-card">
+            <div class="center">
+                <img class="logo" src="img/legalmatch-icon.png" alt="legalmatch-logo">
+            </div>
             <form id="login-form" onSubmit="return false;" action="">
                 <fieldset>
                     <label>
@@ -37,7 +55,7 @@
                     </label>
                 </fieldset>
 
-                <button type="button" id="login-button">Login</button>
+                <button type="submit" id="login-button">Login</button>
             </form>
         </article>
 
