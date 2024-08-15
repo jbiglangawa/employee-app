@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+owasp-dependency-check-logs

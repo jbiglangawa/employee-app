@@ -1,5 +1,5 @@
 const sendAuthRequest = (query, variables) => {
-    return fetch(serverUrl + '/graphql', {
+    return fetch(window.location.origin + '/graphql', {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
@@ -105,7 +105,7 @@ const getToken = async (loginForm) => {
             }
         }`
 
-    const res = await fetch(serverUrl + '/graphql', {
+    const res = await fetch(window.location.origin + '/graphql', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
