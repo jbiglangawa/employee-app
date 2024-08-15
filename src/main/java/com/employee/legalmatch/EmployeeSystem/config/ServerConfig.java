@@ -18,7 +18,7 @@ public class ServerConfig {
     }
 
     public String getServerAddress() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+        return "localhost";
     }
 
     public String getGraphQlUrl() throws UnknownHostException {
