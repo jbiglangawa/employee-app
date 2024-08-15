@@ -29,8 +29,11 @@ const renderEmployeeTable = async () => {
                     <td>${getLengthOfStay(moment(employee.hireDate))}</td>
                     <td>
                         <div class="grid">
-                            <i class="fas fa-edit clickeable-icon" onclick="openUpdateEmployeeModal(${employee.employeeId})"></i>
-                            <i class="fas fa-trash clickeable-icon" onclick="deleteEmployee(${employee.employeeId})"></i>
+                            ${isUserAndAdmin() ? `
+                                <i class="fas fa-edit clickeable-icon" onclick="openUpdateEmployeeModal(${employee.employeeId})"></i>
+                                <i class="fas fa-trash clickeable-icon" onclick="deleteEmployee(${employee.employeeId})"></i>` : `
+                                <i class="fas fa-eye clickeable-icon" onclick="openUpdateEmployeeModal(${employee.employeeId})"></i>`
+                            }
                         </div>
                     </td>
                 </tr>
@@ -99,6 +102,17 @@ const setupValidation = () => {
     let zonedDateTimeToValidate = document.getElementsByClassName("zonedDateTime");
     for(var i = 0; i < zonedDateTimeToValidate.length; i++) {
         removeValidationOnSelect(zonedDateTimeToValidate.item(i))
+    }
+
+    if(!isUserAndAdmin()) {
+        for(let formInput of document.querySelectorAll("[data-static-disabled]")) {
+            formInput.disabled = true;
+        }
+
+        for(let formInput of document.querySelectorAll("[data-static-hidden]")) {
+            formInput.disabled = true;
+            formInput.hidden = true;
+        }
     }
 }
 
@@ -248,11 +262,11 @@ const addContactInfo = (contact) => {
                 ${contact && contact?.contactId ? `<span name="contact-id-${i}" class="hidden">${contact?.contactId}</span>` : ''}
                 <input type="text" name="contact-info-${i}" maxlength=100
                     class="required validate-maxlength" placeholder="Contact Information"
-                    aria-label="Contact Information" value="${contact && contact?.contactInfo ? contact?.contactInfo : ''}">
+                    aria-label="Contact Information" value="${contact && contact?.contactInfo ? contact?.contactInfo : ''}" ${!isUserAndAdmin() ? 'disabled' : ''}>
                 <small id="contact-info-${i}-helper"></small>
             </th>
-            <td><input type="checkbox" name="contact-is-primary-${i}" ${contact && contact?.isPrimary ? 'checked' : ''} /></td>
-            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-${i}')"></i></td>
+            <td><input type="checkbox" name="contact-is-primary-${i}" ${contact && contact?.isPrimary ? 'checked' : ''} ${!isUserAndAdmin() ? 'disabled' : ''}/></td>
+            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-${i}')" ${!isUserAndAdmin() ? 'hidden' : ''}></i></td>
         </tr>`)
 }
 
@@ -264,17 +278,17 @@ const addAddressInfo = (address) => {
                 ${address && address?.addressId ? `<span name="address-id-${i}" class="hidden">${address?.addressId}</span>` : ''}
                 <input type="text" name="address1-${i}" maxlength=500
                     class="required validate-maxlength" placeholder="Address 1"
-                    aria-label="Address 1" value="${address && address?.address1 ? address?.address1 : ''}">
+                    aria-label="Address 1" value="${address && address?.address1 ? address?.address1 : ''}" ${!isUserAndAdmin() ? 'disabled' : ''}>
                 <small id="address1-${i}-helper"></small>
             </th>
             <td>
                 <input type="text" name="address2-${i}" maxlength=500
                     class="required validate-maxlength" placeholder="Address 2"
-                    aria-label="Address 2" value="${address && address?.address2 ? address?.address2 : ''}">
+                    aria-label="Address 2" value="${address && address?.address2 ? address?.address2 : ''}" ${!isUserAndAdmin() ? 'disabled' : ''}>
                 <small id="address2-${i}-helper"></small>
             </td>
-            <td><input type="checkbox" name="address-is-primary-${i}" ${address && address.isPrimary ? 'checked' : ''}></td>
-            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-${i}')"></i></td>
+            <td><input type="checkbox" name="address-is-primary-${i}" ${address && address.isPrimary ? 'checked' : ''} ${!isUserAndAdmin() ? 'disabled' : ''}></td>
+            <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-${i}')" ${!isUserAndAdmin() ? 'hidden' : ''}></i></td>
         </tr>`)
 }
 

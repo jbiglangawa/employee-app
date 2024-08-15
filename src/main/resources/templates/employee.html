@@ -37,7 +37,7 @@
   </header>
   <main class="container">
     <section>
-      <button onclick="openEmployeeFormModal()">Add</button>
+      <button id="open-edit-employee-dialog" onclick="openEmployeeFormModal()" data-static-hidden>Add</button>
     </section>
     <div class="table-wrapper">
       <table>
@@ -69,10 +69,10 @@
         <h3 id="edit-employee-dialog-title">NEW EMPLOYEE REGISTRATION</h3>
       </header>
       <section>
-        <button id="save" onclick="saveEmployeeData()">
+        <button id="save" onclick="saveEmployeeData()" data-static-hidden>
           <i class="fas fa-save"></i> Save
         </button>
-        <button id="delete" class="secondary hidden">
+        <button id="delete" class="secondary hidden" data-static-hidden>
           <i class="fas fa-trash"></i> Delete
         </button>
       </section>
@@ -83,49 +83,50 @@
           <label>
             First Name
             <input type="text" name="firstName" placeholder="First Name" aria-label="First Name" maxlength="255"
-              aria-describedby="firstNameHelper" id="firstName" class="required validate-maxlength">
+              aria-describedby="firstNameHelper" id="firstName" class="required validate-maxlength"
+              data-static-disabled>
             <small id="firstName-helper"></small>
           </label>
           <label>
             Last Name
             <input type="text" name="lastName" placeholder="Last Name" aria-label="Last Name" maxlength="255"
-              class="required validate-maxlength">
+              class="required validate-maxlength" data-static-disabled>
             <small id="lastName-helper"></small>
           </label>
           <label>
             Middle Name
             <input type="text" name="middleName" placeholder="Middle Name" aria-label="Middle Name" maxlength="255"
-              class="required validate-maxlength">
+              class="required validate-maxlength" data-static-disabled>
             <small id="middleName-helper"></small>
           </label>
           <label>
             Birth Date
             <input type="date" name="birthDate" placeholder="Birth Date" aria-label="Birth Date"
-              class="required zonedDateTime">
+              class="required zonedDateTime" data-static-disabled>
             <small id="birthDate-helper"></small>
           </label>
           <label>
             Gender
             <input type="text" name="gender" placeholder="Gender" aria-label="Gender" maxlength="255"
-              class="required validate-maxlength">
+              class="required validate-maxlength" data-static-disabled>
             <small id="gender-helper"></small>
           </label>
           <label>
             Marital Status
             <input type="text" name="maritalStatus" placeholder="Marital Status" aria-label="Marital Status"
-              maxlength="255" class="required validate-maxlength">
+              maxlength="255" class="required validate-maxlength" data-static-disabled>
             <small id="maritalStatus-helper"></small>
           </label>
           <label>
             Position
             <input type="text" name="currentPosition" placeholder="Position" aria-label="Position" maxlength="255"
-              class="required validate-maxlength">
+              class="required validate-maxlength" data-static-disabled>
             <small id="currentPosition-helper"></small>
           </label>
           <label>
             Date Hired
             <input type="date" name="hireDate" placeholder="Date Hired" aria-label="Date Hired"
-              class="required zonedDateTime">
+              class="required zonedDateTime" data-static-disabled>
             <small id="hireDate-helper"></small>
           </label>
         </div>
@@ -141,15 +142,15 @@
               <tr id="contact-1">
                 <th scope="row">
                   <input type="text" name="contact-info-1" maxlength=100 class="required validate-maxlength"
-                    placeholder="Contact Information" aria-label="Contact Information">
+                    placeholder="Contact Information" aria-label="Contact Information" data-static-disabled>
                   <small id="contact-info-1-helper"></small>
                 </th>
-                <td><input type="checkbox" name="contact-is-primary-1" /></td>
-                <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-1')"></i></td>
+                <td><input type="checkbox" name="contact-is-primary-1" data-static-disabled /></td>
+                <td><i class="fas fa-times clickeable-icon" onclick="closeRow('contact-1')" data-static-hidden></i></td>
               </tr>
             </tbody>
           </table>
-          <a class="secondary right clickeable-icon" onclick="addContactInfo()">Add new</a>
+          <a class="secondary right clickeable-icon" onclick="addContactInfo()" data-static-hidden>Add new</a>
 
           <h6>Address Info:</h6>
           <table class="address-info-table">
@@ -163,20 +164,21 @@
               <tr id="address-1">
                 <th scope="row">
                   <input type="text" name="address1-1" maxlength=500 class="required validate-maxlength"
-                    placeholder="Address 1" aria-label="Address 1">
+                    placeholder="Address 1" aria-label="Address 1" data-static-disabled>
                   <small id="address1-1-helper"></small>
                 </th>
                 <td>
                   <input type="text" name="address2-1" maxlength=500 class="required validate-maxlength"
-                    placeholder="Address 2" aria-label="Address 2">
+                    placeholder="Address 2" aria-label="Address 2" data-static-disabled>
                   <small id="address2-1-helper"></small>
                 </td>
-                <td><input type="checkbox" name="address-is-primary-1"></td>
-                <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-1')"></i></td>
+                <td><input type="checkbox" name="address-is-primary-1" data-static-disabled></td>
+                <td><i class="fas fa-times clickeable-icon" onclick="closeRow('address-1')" data-static-hidden></i></td>
               </tr>
             </tbody>
           </table>
-          <a href="#" class="secondary right clickeable-icon" onclick="addAddressInfo()">Add new</a>
+          <a href="#" class="secondary right clickeable-icon" onclick="addAddressInfo()" data-static-hidden>Add
+            new</a>
         </div>
       </form>
 

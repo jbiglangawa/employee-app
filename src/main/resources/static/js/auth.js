@@ -13,6 +13,14 @@ const getTokenFromStorage = () => {
     }
 }
 
+const isUserAndAdmin = () => {
+    const roles = getTokenFromStorage().roles
+    if(!roles) {
+        window.location.href = '/login?error=forbidden-access';
+    }
+    return roles.includes('ROLE_USER') && roles.includes('ROLE_ADMIN')
+}
+
 const saveTokenToStorage = (token) => {
     Cookies.set(TOK3N_KEY, JSON.stringify(token))
 }
