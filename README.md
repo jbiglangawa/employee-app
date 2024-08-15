@@ -72,3 +72,23 @@ To start testing the GraphQL API, here's my Postman workspace to help you get st
 Be sure to change the domain when you test. After that, just run the Get Token to
 save the Bearer Token in the Environment Variables and you can start sending requests. 
 The IP Address of the server will be provided in the email, be sure to use that in the domain.
+
+
+## Setting up SonarQube
+SonarQube is a tool Developers can use to gain insights on what parts of the project to fix and improve.
+However setting it up isn't quick and easy, as it's a self-hosted tool meant to be run on the CI/CD pipeline. 
+So I've setup a docker compose under `/sonarqube/docker-compose.yml`. Run that using `docker compose up -d` 
+and access SonarQube from `http://localhost:9001`.
+
+Once the server is up, [follow the instructions here](https://medium.com/@denis.verkhovsky/sonarqube-with-docker-compose-complete-tutorial-2aaa8d0771d4)
+to get an API token from SonarQube. No need to create the docker-compose file and add the dependencies on the pom file,
+it's added already. Simply follow the steps till you get an API token:
+
+```shell
+mvn clean verify sonar:sonar \
+  -Dsonar.projectKey=SonarQubeDockerDemo \
+  -Dsonar.host.url=http://localhost:9001 \
+  -Dsonar.login=sqp_9fcc11d4b0d851fe988eecb43535307b0d5a65ed
+```
+
+After running, here's the results report: ![sonarcube results](/assets/sonarqube-result.png)
