@@ -5,8 +5,8 @@ import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
 import com.employee.legalmatch.EmployeeSystem.mapper.IUserMapper;
 import com.employee.legalmatch.EmployeeSystem.services.IEmployeeService;
+import com.employee.legalmatch.EmployeeSystem.services.IJwtService;
 import com.employee.legalmatch.EmployeeSystem.services.IUserService;
-import com.employee.legalmatch.EmployeeSystem.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -18,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
@@ -29,7 +28,7 @@ import java.util.List;
 public class GraphQlController {
     private final IEmployeeService employeeService;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
+    private final IJwtService jwtService;
 
     private final IUserService userService;
     private final IUserMapper userMapper;

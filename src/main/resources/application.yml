@@ -15,3 +15,5 @@ spring:
     name: EmployeeSystem
   profiles:
     active: dev
+jwt:
+  ttl_minute: 30
