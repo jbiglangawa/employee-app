@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.employee.legalmatch.EmployeeSystem.util.TestDataGenerator.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static com.employee.legalmatch.EmployeeSystem.util.TestDataGenerator.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTest {

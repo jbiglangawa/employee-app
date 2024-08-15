@@ -1,6 +1,6 @@
 package com.employee.legalmatch.EmployeeSystem.dto;
 
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@EqualsAndHashCode
 public class UserDTO implements UserDetails {
     private final String username;
     private final String password;

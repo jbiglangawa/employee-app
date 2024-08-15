@@ -1,9 +1,6 @@
 package com.employee.legalmatch.EmployeeSystem.mapper;
 
-import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import com.employee.legalmatch.EmployeeSystem.dto.PagedEmployeeDTO;
-import com.employee.legalmatch.EmployeeSystem.entity.Employee;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.employee.legalmatch.EmployeeSystem.util.TestDataGenerator.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeMapperTest {
