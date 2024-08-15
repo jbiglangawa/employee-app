@@ -20,8 +20,10 @@ const saveTokenToStorage = (token) => {
 const sendLoginRequest = async () => {
     var formData = Object.fromEntries(new FormData(document.getElementById("login-form")));
     var token = await getToken(formData);
-    setTimeout(() => {
-        saveTokenToStorage(token.data.getToken)
-        window.location.href = '/employee';
-    }, 1000)
+    if(token) {
+        setTimeout(() => {
+            saveTokenToStorage(token.data.getToken)
+            window.location.href = '/employee';
+        }, 1000)
+    }
 }

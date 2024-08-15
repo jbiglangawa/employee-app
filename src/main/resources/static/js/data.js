@@ -1,20 +1,16 @@
-const sendRequest = (query, variables, href) => {
-    const headers = {
-        'content-type': 'application/json'
-    }
-    if(href != 'getToken') {
-        headers['Authorization'] = `Bearer ${getTokenFromStorage().token}`
-    }
-
+const sendAuthRequest = (query, variables) => {
     return fetch(serverUrl + '/graphql', {
         method: 'POST',
-        headers: headers,
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': `Bearer ${getTokenFromStorage().token}`
+        },
         body: JSON.stringify({
             query: query,
             variables: variables
         })
     }).then(res => {
-        if(res.status == 403 && window.location.href != "/login") {
+        if(res.status == 403) {
             window.location.href = '/login';
         }
         return res.json()
@@ -22,7 +18,7 @@ const sendRequest = (query, variables, href) => {
 }
 
 const getAllEmployees = (page) => {
-    return sendRequest(`
+    return sendAuthRequest(`
         query GetEmployees($pageSize: PageSize!) {
             getEmployees(pageSize: $pageSize) {
                 employees {
@@ -52,7 +48,7 @@ const getAllEmployees = (page) => {
 }
 
 const getEmployeeById = (employeeId) => {
-    return sendRequest(`
+    return sendAuthRequest(`
         query GetEmployees($employeeId: Int!) {
             getEmployeeById(employeeId: $employeeId) {
                 employeeId
@@ -80,32 +76,54 @@ const getEmployeeById = (employeeId) => {
 }
 
 const createEmployee = (employee) => {
-    return sendRequest(`
+    return sendAuthRequest(`
         mutation CreateEmployee($employee: CreateEmployeeInput!) {
             createEmployee(employee: $employee)
         }`, employee)
 }
 
 const updateEmployee = (employee) => {
-    return sendRequest(`
+    return sendAuthRequest(`
         mutation UpdateEmployee($employee: UpdateEmployeeInput!) {
             updateEmployee(employee: $employee)
         }`, employee)
 }
 
 const deleteEmployeeById = (employeeId) => {
-    return sendRequest(`
+    return sendAuthRequest(`
         mutation DeleteEmployee($employeeId: Int!) {
             deleteEmployee(employeeId: $employeeId)
         }`, {employeeId})
 }
 
-const getToken = (loginForm) => {
-    return sendRequest(`
+const getToken = async (loginForm) => {
+    const query = `
         mutation GetToken($loginForm: LoginForm!) {
             getToken(loginForm: $loginForm) {
                 token
                 roles
             }
-        }`, {loginForm}, "getToken")        
+        }`
+
+    const res = await fetch(serverUrl + '/graphql', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: query,
+            variables: {loginForm}
+        })
+    }).then(res => res.json())
+    
+    if(res.errors) {
+        if(res.errors[0].message === "Unauthorized") {
+            loginErrorToast("Invalid Username or Password").showToast();
+            return null;
+        }else {
+            failedToSaveToast.showToast();
+        }
+    }
+
+    return res;
 }

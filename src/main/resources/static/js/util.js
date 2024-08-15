@@ -53,3 +53,13 @@ const failedToSaveToast = Toastify({
       fontFamily: "GothamPro"
     },
 })
+
+const loginErrorToast = (message) => Toastify({
+    text: message,
+    duration: 2000,
+    gravity: "bottom",
+    style: {
+      background: "#D93526",
+      fontFamily: "GothamPro"
+    },
+})
