@@ -295,5 +295,5 @@ const navigate = (page) => {
 
 const logout = () => {
     clearTokenFromStorage();
-    window.location.href = '/login';
+    window.location.href = '/login?logout=success';
 }

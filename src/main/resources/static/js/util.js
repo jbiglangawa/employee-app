@@ -34,6 +34,17 @@ const saveSuccessToast = Toastify({
     },
 })
 
+const logoutSuccessful = Toastify({
+    text: "Logged out successfully!",
+    duration: 2000,
+    newWindow: true,
+    gravity: "bottom",
+    style: {
+      background: "#00895A",
+      fontFamily: "GothamPro"
+    },
+})
+
 const deleteSuccessToast = Toastify({
     text: "Record deleted successfully!",
     duration: 2000,
