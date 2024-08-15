@@ -15,7 +15,6 @@ const renderEmployeeTable = async () => {
     let response = await getAllEmployees(states.currentPage)
 
     states.lastPage = Math.trunc(response.data.getEmployees.totalCount / 10)
-    console.log(states.lastPage)
     
     document.getElementById("employee-table").innerHTML =
         response.data.getEmployees.employees.map(employee => {

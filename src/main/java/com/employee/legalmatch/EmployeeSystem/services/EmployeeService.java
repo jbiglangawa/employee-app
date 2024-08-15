@@ -35,7 +35,7 @@ public class EmployeeService implements IEmployeeService {
     public PagedEmployeeDTO getEmployees(PageSize pageSize) {
         long totalCount = employeeRepository.count();
 
-        var results = employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size(), Sort.by(Sort.Direction.DESC, "employeeId")))
+        var results = employeeRepository.findAll(PageRequest.of(pageSize.page(), pageSize.size(), Sort.by(Sort.Direction.DESC, "createdOn")))
                 .get()
                 .toList();
         return employeeMapper.map(results, totalCount);

@@ -1,40 +1,36 @@
 package com.employee.legalmatch.EmployeeSystem.services;
 
-import com.employee.legalmatch.EmployeeSystem.dto.UserDTO;
+import com.employee.legalmatch.EmployeeSystem.dto.UserForm;
+import com.employee.legalmatch.EmployeeSystem.entity.User;
+import com.employee.legalmatch.EmployeeSystem.exception.UserAlreadyExistsException;
+import com.employee.legalmatch.EmployeeSystem.mapper.IUserMapper;
+import com.employee.legalmatch.EmployeeSystem.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-@Qualifier("userDetailsService")
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
-    private final PasswordEncoder passwordEncoder;
+public class UserService implements IUserService {
+    private final IUserRepository userRepository;
+    private final IUserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(username.equals("user")) {
-            UserDTO userDetails = new UserDTO();
-            userDetails.setUsername("user");
-            userDetails.setPassword(passwordEncoder.encode("password"));
-            userDetails.setAuthorities(List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
+        return userMapper.map(user);
+    }
 
-            return userDetails;
-        }else if(username.equals("admin")) {
-            UserDTO userDetails = new UserDTO();
-            userDetails.setUsername("admin");
-            userDetails.setPassword(passwordEncoder.encode("password"));
-            userDetails.setAuthorities(List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
-
-            return userDetails;
+    @Override
+    public User createUser(UserForm userForm) {
+        var existingUser = userRepository.findByUsername(userForm.username());
+        if(existingUser.isPresent()) {
+            throw new UserAlreadyExistsException();
         }
-        return null;
+
+        var user = userMapper.map(userForm);
+        return userRepository.save(user);
     }
 }

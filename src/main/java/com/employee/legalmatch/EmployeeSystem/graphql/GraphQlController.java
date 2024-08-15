@@ -3,7 +3,9 @@ package com.employee.legalmatch.EmployeeSystem.graphql;
 import com.employee.legalmatch.EmployeeSystem.dto.*;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeAddress;
 import com.employee.legalmatch.EmployeeSystem.entity.EmployeeContact;
+import com.employee.legalmatch.EmployeeSystem.mapper.IUserMapper;
 import com.employee.legalmatch.EmployeeSystem.services.IEmployeeService;
+import com.employee.legalmatch.EmployeeSystem.services.IUserService;
 import com.employee.legalmatch.EmployeeSystem.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -28,9 +30,11 @@ public class GraphQlController {
     private final IEmployeeService employeeService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
 
-    @Secured("ROLE_USER")
+    private final IUserService userService;
+    private final IUserMapper userMapper;
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @QueryMapping
     public PagedEmployeeDTO getEmployees(@Argument PageSize pageSize) {
         return employeeService.getEmployees(pageSize);
@@ -79,10 +83,16 @@ public class GraphQlController {
         );
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(loginForm.username());
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.username());
+            UserDetails userDetails = userService.loadUserByUsername(loginForm.username());
             return new AuthToken(token, userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
         } else {
             throw new UsernameNotFoundException("Invalid request");
         }
+    }
+
+    @MutationMapping
+    public Integer createUser(@Argument UserForm userForm) {
+        var createdUser = userService.createUser(userForm);
+        return createdUser.getUserId();
     }
 }

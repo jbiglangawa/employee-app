@@ -1,11 +1,10 @@
 package com.employee.legalmatch.EmployeeSystem.entity;
 
-import com.employee.legalmatch.EmployeeSystem.dto.EmployeeDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +42,13 @@ public class Employee {
     @Column(name = "CurrentPosition")
     private String currentPosition;
 
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CreatedOn")
     private ZonedDateTime createdOn;
 
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "UpdatedOn")
     private ZonedDateTime updatedOn;
 

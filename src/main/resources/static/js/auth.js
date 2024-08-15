@@ -1,11 +1,20 @@
 const TOK3N_KEY = "JESSION_TKEN";
 
+const clearTokenFromStorage = () => {
+    Cookies.remove(TOK3N_KEY);
+}
+
 const getTokenFromStorage = () => {
-    return Cookies.get(TOK3N_KEY);
+    let cookie = Cookies.get(TOK3N_KEY);
+    if(cookie && cookie != "null") {
+        return JSON.parse(cookie);
+    }else {
+        window.location.href = '/login';
+    }
 }
 
 const saveTokenToStorage = (token) => {
-    Cookies.set(TOK3N_KEY, token)
+    Cookies.set(TOK3N_KEY, JSON.stringify(token))
 }
 
 const sendLoginRequest = async () => {

@@ -1,8 +1,8 @@
-const sendRequest = (query, variables) => {
+const sendRequest = (query, variables, href) => {
     const headers = {
         'content-type': 'application/json'
     }
-    if(getTokenFromStorage()) {
+    if(href != 'getToken') {
         headers['Authorization'] = `Bearer ${getTokenFromStorage().token}`
     }
 
@@ -107,5 +107,5 @@ const getToken = (loginForm) => {
                 token
                 roles
             }
-        }`, {loginForm})
+        }`, {loginForm}, "getToken")        
 }
