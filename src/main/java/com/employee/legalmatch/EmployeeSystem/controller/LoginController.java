@@ -15,11 +15,19 @@ import java.net.UnknownHostException;
 public class LoginController {
     private final ServerConfig serverConfig;
 
+    /**
+     * Redirects to login.html after visiting home "/"
+     * @return login.html
+     */
     @GetMapping("/")
     public String index() {
         return "redirect:/login";
     }
 
+    /**
+     * Opens up login.html and injects serverAddress via Thymeleaf
+     * @return "login" with the object serverAddress
+     */
     @GetMapping("/login")
     public ModelAndView login() {
         ModelAndView response = new ModelAndView("login");

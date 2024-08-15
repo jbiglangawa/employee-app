@@ -16,6 +16,12 @@ public class UserService implements IUserService {
     private final IUserRepository userRepository;
     private final IUserMapper userMapper;
 
+    /**
+     * Loads the User from the DB with the given Username
+     * @param username of the user
+     * @return UserDetails
+     * @throws UsernameNotFoundException if the user is not found in the database
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username)
@@ -23,6 +29,12 @@ public class UserService implements IUserService {
         return userMapper.map(user);
     }
 
+    /**
+     * Creates a new user. Runs a quick duplicate check on the DB.
+     * If the username exists, it'll throw a UserAlreadyExistsException.
+     * @param userForm contains user-related information
+     * @return User created
+     */
     @Override
     public User createUser(UserForm userForm) {
         var existingUser = userRepository.findByUsername(userForm.username());

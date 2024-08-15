@@ -112,5 +112,5 @@ type AuthToken {
 input UserForm {
     username: String!,
     password: String!,
-    roles: [String]
+    roles: [String]!
 }

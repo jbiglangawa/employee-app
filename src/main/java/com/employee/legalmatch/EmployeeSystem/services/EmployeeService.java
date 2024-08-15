@@ -28,6 +28,11 @@ public class EmployeeService implements IEmployeeService {
 
     private final IEmployeeMapper employeeMapper;
 
+    /**
+     * Returns a list of employees with the given pageSize
+     * @param pageSize contains page and size
+     * @return PagedEmployeeDTO
+     */
     @Override
     public PagedEmployeeDTO getEmployees(PageSize pageSize) {
         long totalCount = employeeRepository.count();
@@ -38,6 +43,11 @@ public class EmployeeService implements IEmployeeService {
         return employeeMapper.map(results, totalCount);
     }
 
+    /**
+     * Returns an employee with the given employeeId
+     * @param employeeId identity of the requested entity
+     * @return EmployeeDTO of the requested employeeId
+     */
     @Override
     public EmployeeDTO getEmployeeById(Integer employeeId) {
         var employeeById = employeeRepository.findById(employeeId.longValue())
@@ -45,6 +55,11 @@ public class EmployeeService implements IEmployeeService {
         return employeeMapper.map(employeeById);
     }
 
+    /**
+     * Creates a new employee
+     * @param employee contains all information about the employee
+     * @return Employee
+     */
     @Override
     public Employee createEmployee(EmployeeDTO employee) {
         return employeeRepository.saveAndFlush(employeeMapper.map(employee));
@@ -140,6 +155,11 @@ public class EmployeeService implements IEmployeeService {
         return employeeRepository.saveAndFlush(employee);
     }
 
+    /**
+     * Deletes the employee with the given employeeId
+     * @param employeeId id of the employee to be deleted
+     * @return employeeId of the deleted entity
+     */
     @Override
     public Integer deleteEmployee(Integer employeeId) {
         employeeRepository.deleteById(Long.valueOf(employeeId));

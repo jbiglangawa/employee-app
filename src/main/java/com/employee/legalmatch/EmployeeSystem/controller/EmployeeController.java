@@ -15,6 +15,10 @@ import java.net.UnknownHostException;
 public class EmployeeController {
     private final ServerConfig serverConfig;
 
+    /**
+     * Opens up employee.html and injects serverAddress via Thymeleaf
+     * @return "employee" with the object serverAddress
+     */
     @GetMapping
     public ModelAndView employeeCatalogue() {
         ModelAndView response = new ModelAndView("employee");
