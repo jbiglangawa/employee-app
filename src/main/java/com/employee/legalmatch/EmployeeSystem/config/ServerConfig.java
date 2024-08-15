@@ -17,8 +17,8 @@ public class ServerConfig {
         return Integer.valueOf(Objects.requireNonNull(environment.getProperty("local.server.port")));
     }
 
-    public String getServerAddress() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+    public String getServerAddress() {
+        return InetAddress.getLoopbackAddress().getHostAddress();
     }
 
     public String getGraphQlUrl() throws UnknownHostException {
