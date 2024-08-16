@@ -92,3 +92,13 @@ mvn clean verify sonar:sonar \
 ```
 
 After running, here's the results report: ![sonarcube results](/assets/sonarqube-result.png)
+
+## Validating Database Results
+If you need to validate database results, here's how you can connect:
+If you're using DBeaver to connect, you can use this jdbc url:
+```properties
+DATABASE_URL = jdbc:mysql://mysqldb:3306/legalmatch?allowPublicKeyRetrieval=true
+DATABASE = legalmatch
+USER = mysql_user
+PASSWORD = test_pw
+```
